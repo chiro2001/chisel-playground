@@ -3,10 +3,12 @@ package test
  
 import chisel3._
 import chisel3.experimental._
+// import chisel3.experimental.chiselName
  
-class AND extends Module {
+@chiselName
+class MyClock extends Module {
   val io = IO(new Bundle {
-    val on_done = Output(UInt(1.W))
+    val onDone = Output(UInt(1.W))
   })
 
   def generateClock(n: Int) = {
@@ -15,7 +17,7 @@ class AND extends Module {
     cntReg
   }
 
-  val clock = generateClock(4)
+  val clkReg = generateClock(4)
  
-  io.on_done = Mux(clock == 0.U, 0.U, 1.U)
+  io.onDone := Mux(clkReg === 0.U, 0.U, 1.U)
 }
