@@ -22,13 +22,13 @@ class FlowLights(ledWidth: Int = 8, delay: Int = 100000000, useSwitch: Boolean =
 
   def generate(count: UInt) = {
     val res = (for { a <- 0 until ledWidth } yield Mux(a.U < count, 1.U, 0.U) << a).reduce(_ | _)
-    printf(p"res = ${Binary(res)}\n")
+    // printf(p"res = ${Binary(res)}\n")
     res
   }
 
   when(io.button === 1.U) {
-    ledReg := generate(if (useSwitch) io.ledCount.get else 1.U)
-    printf(p"generated: ${Binary(ledReg)}\n")
+    ledReg := generate(if (useSwitch) (io.ledCount.get + 1.U) else 1.U)
+    // printf(p"generated: ${Binary(ledReg)}\n")
     clkReg := delay.U(32.W)
   } .otherwise {
     ledReg := Mux(clkReg === 0.U, flow(ledReg), ledReg)
