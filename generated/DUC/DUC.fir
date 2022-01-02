@@ -33,7 +33,7 @@ circuit DUC :
       node _T = eq(cnt, UInt<3>("h06")) @[DUC.scala 49:17]
       when _T : @[DUC.scala 49:58]
         cnt <= UInt<1>("h00") @[DUC.scala 50:13]
-        run <= UInt<1>("h00") @[DUC.scala 51:13]
+        run <= io.in.sync @[DUC.scala 51:13]
         skip @[DUC.scala 49:58]
       else : @[DUC.scala 52:20]
         node _cnt_T = add(cnt, UInt<1>("h01")) @[DUC.scala 53:20]

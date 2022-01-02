@@ -39,7 +39,7 @@ circuit DDC :
         node _T = eq(cnt, UInt<4>("h0e")) @[DDC.scala 74:17]
         when _T : @[DDC.scala 74:27]
           cnt <= UInt<1>("h00") @[DDC.scala 75:13]
-          run <= UInt<1>("h00") @[DDC.scala 76:13]
+          run <= io.in.sync @[DDC.scala 76:13]
           node _ave_T = add(yListMul[0], yListMul[1]) @[DDC.scala 54:33]
           node _ave_T_1 = tail(_ave_T, 1) @[DDC.scala 54:33]
           node _ave_T_2 = asSInt(_ave_T_1) @[DDC.scala 54:33]

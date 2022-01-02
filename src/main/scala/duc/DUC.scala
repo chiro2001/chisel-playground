@@ -48,7 +48,7 @@ class DUC(mode: Int = DUC_125M) extends Module {
     when (run) {
       when (cnt === (if (mode == DUC_120M) 6 else 25).U) {
         cnt := 0.U
-        run := false.B
+        run := io.in.sync
       } .otherwise {
         cnt := cnt + 1.U
       }

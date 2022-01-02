@@ -32,7 +32,7 @@ module DUC(
       run <= 1'h0; // @[DUC.scala 40:22]
     end else if (run) begin // @[DUC.scala 48:16]
       if (cnt == 8'h6) begin // @[DUC.scala 49:58]
-        run <= 1'h0; // @[DUC.scala 51:13]
+        run <= io_in_sync; // @[DUC.scala 51:13]
       end else begin
         run <= _GEN_1;
       end

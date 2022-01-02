@@ -73,7 +73,7 @@ class DDC(mode: Int = DDC_60M) extends Module {
       // 15波/bit
       when (cnt === 14.U) {
         cnt := 0.U
-        run := false.B
+        run := io.in.sync
         calc(out)
       } .otherwise {
         cnt := cnt + 1.U

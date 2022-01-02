@@ -29,7 +29,7 @@ module DDC(
   wire [15:0] ave = $signed(_ave_T_5) + $signed(yListMul_3); // @[DDC.scala 54:33]
   wire  _T_1 = $signed(ave) > 16'sh0; // @[DDC.scala 55:15]
   wire [7:0] _cnt_T_1 = cnt + 8'h1; // @[DDC.scala 79:20]
-  wire  _GEN_2 = cnt == 8'he ? 1'h0 : run; // @[DDC.scala 74:27 DDC.scala 76:13 DDC.scala 50:20]
+  wire  _GEN_2 = cnt == 8'he ? io_in_sync : run; // @[DDC.scala 74:27 DDC.scala 76:13 DDC.scala 50:20]
   wire [7:0] _io_out_readData_T_2 = io_in_data - 8'h7f; // @[DDC.scala 38:39]
   wire [7:0] _io_out_readData_T_5 = 8'h7f - io_in_data; // @[DDC.scala 40:40]
   wire [7:0] _io_out_readData_T_8 = 8'sh0 - $signed(_io_out_readData_T_5); // @[DDC.scala 40:18]
