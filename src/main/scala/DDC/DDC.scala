@@ -28,6 +28,7 @@ class DDC(mode: Int = DDC_60M) extends Module {
     val out = Output(new Bundle {
       // 慢时钟域（直接分频）
       val data = Bool()
+      val update = Bool()
       val readData = SInt(8.W)
       val value = UInt(16.W)
     })
@@ -60,9 +61,11 @@ class DDC(mode: Int = DDC_60M) extends Module {
   }
 
   val out = RegInit(false.B)
+  val update = RegInit(false.B)
 
   io.out.value := 0.U
   io.out.readData := 0.S
+  io.out.update := update
 
   when (io.in.sync) {
     yListMul(0.U) := (io.out.readData * yListRefer(0).asTypeOf(SInt(8.W))).asTypeOf(SInt(16.W));
@@ -75,6 +78,7 @@ class DDC(mode: Int = DDC_60M) extends Module {
         cnt := 0.U
         run := io.in.sync
         calc(out)
+        update := ~update
       } .otherwise {
         cnt := cnt + 1.U
       }
