@@ -46,7 +46,7 @@ class DDC(mode: Int = DDC_60M) extends Module {
 
   val yListMul = RegInit(VecInit(for {a <- 0 to 3} yield 0.S(16.W)))
 
-  val cnt = RegInit(0.U(3.W))
+  val cnt = RegInit(0.U(8.W))
   val run = RegInit(false.B)
 
   // For 60M Only
@@ -70,7 +70,8 @@ class DDC(mode: Int = DDC_60M) extends Module {
     run := true.B
   } .otherwise {
     when (run) {
-      when (cnt === 2.U) {
+      // 15波/bit
+      when (cnt === 14.U) {
         cnt := 0.U
         run := false.B
         calc(out)
