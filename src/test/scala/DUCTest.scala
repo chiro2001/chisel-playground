@@ -13,7 +13,7 @@ class DUCTest extends FlatSpec with ChiselScalatestTester with Matchers {
     test(new DUC(mode)) { c =>
       println("Starting test DUC...")
       val xList = if (mode == DUC_120M) List.range(0, 7) else List.range(0, 26)
-      val yList = if (mode == DUC_120M) xList.map(x => (sin(x * 2 * Pi / 6) * 0xEF).toInt.S) else xList.map(x => (sin(x * 8 * Pi / 25) * 0xEF).toInt.S)
+      val yList = if (mode == DUC_120M) xList.map(x => (sin(x * 2 * Pi / 6) * 0x7F).toInt.S) else xList.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S)
       c.io.in.data.poke(1.B)
       c.clock.step(1)
       c.io.in.clockDac.step(1)

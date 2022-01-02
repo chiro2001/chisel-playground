@@ -34,7 +34,7 @@ class DUC(mode: Int = DUC_125M) extends Module {
   })
 
   val xList = if (mode == DUC_120M) Seq.range(0, 7) else Seq.range(0, 26)
-  val yList = VecInit(if (mode == DUC_120M) xList.map(x => (sin(x * 2 * Pi / 6) * 0xEF).toInt.S) else xList.map(x => (sin(x * 8 * Pi / 25) * 0xEF).toInt.S))
+  val yList = VecInit(if (mode == DUC_120M) xList.map(x => (sin(x * 2 * Pi / 6) * 0x7F).toInt.S) else xList.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
 
   withClock(io.in.clockDac) {
     val cnt = RegInit(0.U(8.W))
@@ -43,7 +43,7 @@ class DUC(mode: Int = DUC_125M) extends Module {
     } .otherwise {
       cnt := cnt + 1.U
     }
-    io.out.dac := (yList(cnt) * Mux(io.in.data, 1.S, -1.S) + 0xEF.S).asTypeOf(UInt(8.W))
+    io.out.dac := (yList(cnt) * Mux(io.in.data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
   }
 
 }

@@ -1,0 +1,27 @@
+[
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~DDC|DDC>io_out_value",
+    "sources":[
+      "~DDC|DDC>io_in_sync",
+      "~DDC|DDC>io_out_readData",
+      "~DDC|DDC>io_in_data"
+    ]
+  },
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~DDC|DDC>io_out_readData",
+    "sources":[
+      "~DDC|DDC>io_in_sync",
+      "~DDC|DDC>io_in_data"
+    ]
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.VerilogEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"generated/DDC"
+  }
+]
