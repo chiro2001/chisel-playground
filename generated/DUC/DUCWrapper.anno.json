@@ -1,0 +1,18 @@
+[
+  {
+    "class":"firrtl.transforms.CombinationalPath",
+    "sink":"~DUCWrapper|DUCWrapper>io_out_dac",
+    "sources":[
+      "~DUCWrapper|DUCWrapper>io_in_sync",
+      "~DUCWrapper|DUCWrapper>io_in_data"
+    ]
+  },
+  {
+    "class":"firrtl.EmitCircuitAnnotation",
+    "emitter":"firrtl.VerilogEmitter"
+  },
+  {
+    "class":"firrtl.transforms.BlackBoxTargetDirAnno",
+    "targetDir":"generated/DUC"
+  }
+]

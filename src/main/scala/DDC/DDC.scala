@@ -91,3 +91,28 @@ class DDC(mode: Int = DDC_60M) extends Module {
 
   io.out.data := out
 }
+
+@chiselName
+class DDCWrapper(mode: Int = DDC_60M) extends RawModule {
+  val io = IO(new Bundle {
+    val in = Input(new Bundle {
+      // 在快时钟域（120M/125M）
+      val data = UInt(8.W)
+      val sync = Bool()
+    })
+    val out = Output(new Bundle {
+      // 慢时钟域（直接分频）
+      val data = Bool()
+      val update = Bool()
+      val readData = SInt(8.W)
+      val value = UInt(16.W)
+    })
+    val clock = Input(Clock())
+    val resetN = Input(Bool())
+  })
+  withClockAndReset(io.clock, ~io.resetN) {
+    val module = Module(new DDC(mode = mode))
+    module.io.in <> io.in
+    module.io.out <> io.out
+  }
+}

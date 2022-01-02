@@ -18,7 +18,7 @@ import DUCMode._
 import DUCOffset._
 
 @chiselName
-class DUC(mode: Int = DUC_125M) extends Module {
+class DUC(mode: Int = DUC_120M) extends Module {
   val io = IO(new Bundle {
     val in = Input(new Bundle {
       // 默认书时钟域
@@ -55,5 +55,28 @@ class DUC(mode: Int = DUC_125M) extends Module {
       io.out.dac := (yList(cnt) * Mux(io.in.data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
     }
   }
+}
 
+@chiselName
+class DUCWrapper(mode: Int = DUC_120M) extends RawModule {
+  val io = IO(new Bundle {
+    val in = Input(new Bundle {
+      // 默认书时钟域
+      val data = Bool()
+      // 用于DAC的快时钟域
+      val clockDac = Clock()
+      val sync = Bool()
+    })
+    val out = Output(new Bundle {
+      // 快时钟域的DAC数据
+      val dac = UInt(8.W)
+    })
+    val clock = Input(Clock())
+    val resetN = Input(Bool())
+  })
+  withClockAndReset(io.clock, ~io.resetN) {
+    val module = Module(new DUC(mode = mode))
+    module.io.in <> io.in
+    module.io.out <> io.out
+  }
 }
