@@ -18,7 +18,7 @@ import DDCMode._
 import DDCOffset._
 
 @chiselName
-class DDC(mode: Int = DDC_120M) extends Module {
+class DDC(mode: Int = DDC_60M) extends Module {
   val io = IO(new Bundle {
     val in = Input(new Bundle {
       // 在快时钟域（120M/125M）
@@ -41,8 +41,8 @@ class DDC(mode: Int = DDC_120M) extends Module {
     }
   }
 
-  val xListRefer = if (mode == DDC_120M) Seq.range(0, 3) else Seq.range(0, 26)
-  val yListRefer = VecInit(if (mode == DDC_120M) xListRefer.map(x => (sin(x * 2 * Pi / 3) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
+  val xListRefer = if (mode == DDC_60M) Seq.range(0, 3) else Seq.range(0, 26)
+  val yListRefer = VecInit(if (mode == DDC_60M) xListRefer.map(x => (sin(x * 2 * Pi / 3) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
 
   val yListMul = RegInit(VecInit(for {a <- 0 to 3} yield 0.S(16.W)))
 
