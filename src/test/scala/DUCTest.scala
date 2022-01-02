@@ -16,7 +16,7 @@ class DUCTest extends FlatSpec with ChiselScalatestTester with Matchers {
       val yList = if (mode == DUC_120M) xList.map(x => (sin(x * 2 * Pi / 6) * 0x7F).toInt.S) else xList.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S)
       c.io.in.data.poke(1.B)
       c.clock.step(1)
-      c.io.in.clockDac.step(1)
+      // c.io.in.clockDac.step(1)
       // c.io.out.dac.expect(yList(0).asTypeOf(UInt(8.W)))
       println("test done.")
     }
