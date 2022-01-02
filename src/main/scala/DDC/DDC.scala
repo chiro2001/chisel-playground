@@ -5,13 +5,13 @@ import chisel3.util._
 import chisel3.experimental.chiselName
 
 object DDCMode {
-  val DDC_120M = 0;
-  val DDC_125M = 1;
+  val DDC_60M = 0;
+  val DDC_65M = 1;
 }
 
 object DDCOffset {
-  val Offset120M = 0;
-  val Offset125M = 0;
+  val Offset60M = 0;
+  val Offset65M = 0;
 }
 
 import DDCMode._
@@ -41,18 +41,15 @@ class DDC(mode: Int = DDC_120M) extends Module {
     }
   }
 
-  val xListRefer = if (mode == DDC_120M) Seq.range(0, 6) else Seq.range(0, 26)
-  val yListRefer = VecInit(if (mode == DDC_120M) xListRefer.map(x => (sin(x * 2 * Pi / 6) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
+  val xListRefer = if (mode == DDC_120M) Seq.range(0, 3) else Seq.range(0, 26)
+  val yListRefer = VecInit(if (mode == DDC_120M) xListRefer.map(x => (sin(x * 2 * Pi / 3) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
 
-  val yListMul = RegInit(VecInit(for {a <- 0 to 6} yield 0.S(16.W)))
+  val yListMul = RegInit(VecInit(for {a <- 0 to 3} yield 0.S(16.W)))
 
   val cnt = RegInit(0.U(3.W))
   val run = RegInit(false.B)
 
-  // For 120M Only
-  // val yMul = yListRefer.map(x => x.asTypeOf(UInt(16.W)) * io.in.data)
-  // io.out.value := yMul
-
+  // For 60M Only
   def calc(out: Bool) = {
     val ave = yListMul.reduce(_ + _)
     when (ave > 0.S) {
@@ -73,7 +70,7 @@ class DDC(mode: Int = DDC_120M) extends Module {
     run := true.B
   } .otherwise {
     when (run) {
-      when (cnt === 5.U) {
+      when (cnt === 2.U) {
         cnt := 0.U
         run := false.B
         calc(out)
