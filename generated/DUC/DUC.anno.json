@@ -3,6 +3,7 @@
     "class":"firrtl.transforms.CombinationalPath",
     "sink":"~DUC|DUC>io_out_dac",
     "sources":[
+      "~DUC|DUC>io_in_sync",
       "~DUC|DUC>io_in_data"
     ]
   },
