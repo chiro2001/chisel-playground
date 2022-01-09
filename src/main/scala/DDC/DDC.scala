@@ -6,12 +6,12 @@ import chisel3.experimental.chiselName
 
 object DDCMode {
   val DDC_60M = 0;
-  val DDC_65M = 1;
+  val DDC_200M = 1;
 }
 
 object DDCOffset {
   val Offset60M = 0;
-  val Offset65M = 0;
+  val Offset200M = 0;
 }
 
 import DDCMode._
@@ -42,12 +42,12 @@ class DDC(mode: Int = DDC_60M) extends Module {
     }
   }
 
-  val xListRefer = if (mode == DDC_60M) Seq.range(0, 3) else Seq.range(0, 26)
-  val yListRefer = VecInit(if (mode == DDC_60M) xListRefer.map(x => (sin(x * 2 * Pi / 3) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
+  val xListRefer = if (mode == DDC_60M) Seq.range(0, 3) else Seq.range(0, 10)
+  val yListRefer = VecInit(if (mode == DDC_60M) xListRefer.map(x => (sin(x * 2 * Pi / 3) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 2 * Pi / 10) * 0x7F).toInt.S))
 
-  val yListMul = RegInit(VecInit(for {a <- 0 to 3} yield 0.S(16.W)))
+  val yListMul = RegInit(VecInit(for {a <- 0 to (if (mode == DDC_60M) 3 else 10)} yield 0.S(16.W)))
 
-  val cnt = RegInit(0.U(8.W))
+  val cnt = RegInit(0.U(16.W))
   val run = RegInit(false.B)
 
   // For 60M Only
@@ -73,8 +73,8 @@ class DDC(mode: Int = DDC_60M) extends Module {
     run := true.B
   } .otherwise {
     when (run) {
-      // 15波/bit
-      when (cnt === 14.U) {
+      // 15 or 波/bit
+      when (cnt === ((if (mode == DDC_60M) 15 else 50) - 1).U) {
         cnt := 0.U
         run := io.in.sync
         calc(out)
