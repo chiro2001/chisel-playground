@@ -13,6 +13,6 @@
   },
   {
     "class":"firrtl.transforms.BlackBoxTargetDirAnno",
-    "targetDir":"genrated/DUC"
+    "targetDir":"generated/DUC"
   }
 ]
