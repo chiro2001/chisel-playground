@@ -32,7 +32,9 @@ class DUC(mode: Int = DUC_120M) extends Module {
   val sampleCount = if (mode == DUC_120M) 6 else 25
   val xList = Seq.range(0, sampleCount + 1)
   val yList = VecInit(xList.map(x => (sin(x * (if (mode == DUC_120M) 2 else 8) * Pi / 6) * 0x7F).toInt.S))
-  def IndexedData(index: UInt) = (yList(index) * Mux(io.in.data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
+  val data = RegInit(false.B)
+
+  def IndexedData(index: UInt) = (yList(index) * Mux(data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
 
   val run = RegInit(false.B)
   val cnt = RegInit(0.U(8.W))
@@ -41,6 +43,7 @@ class DUC(mode: Int = DUC_120M) extends Module {
     io.out.dac := IndexedData(0.U)
     run := true.B
     cnt := 0.U
+    data := io.in.data
   }
   when (run) {
     when (cnt === (sampleCount - 1).U) {

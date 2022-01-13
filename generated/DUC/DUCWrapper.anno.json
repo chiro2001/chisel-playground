@@ -3,8 +3,7 @@
     "class":"firrtl.transforms.CombinationalPath",
     "sink":"~DUCWrapper|DUCWrapper>io_out_dac",
     "sources":[
-      "~DUCWrapper|DUCWrapper>io_in_sync",
-      "~DUCWrapper|DUCWrapper>io_in_data"
+      "~DUCWrapper|DUCWrapper>io_in_sync"
     ]
   },
   {
