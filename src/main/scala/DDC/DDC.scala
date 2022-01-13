@@ -1,4 +1,4 @@
-package test 
+package test
 import scala.math._
 import chisel3._
 import chisel3.util._
@@ -33,27 +33,31 @@ class DDC(mode: Int = DDC_200M) extends Module {
   })
 
   def decode(v: UInt, outPort: SInt) = {
-    when (v > 0x7F.U) {
-      outPort := (v - 0x7F.U).asTypeOf(SInt(outPort.getWidth.W))
-    } .otherwise {
-      outPort := -(0x7F.U - v).asTypeOf(SInt(outPort.getWidth.W))
+    when(v > 0x7f.U) {
+      outPort := (v - 0x7f.U).asTypeOf(SInt(outPort.getWidth.W))
+    }.otherwise {
+      outPort := -(0x7f.U - v).asTypeOf(SInt(outPort.getWidth.W))
     }
   }
 
   val sampleCount = if (mode == DDC_60M) 3 else 10
   val waveCount = if (mode == DDC_60M) 15 else 50
   val xListRefer = Seq.range(0, sampleCount + 1)
-  val yListRefer = VecInit(xListRefer.map(x => (sin(x * 2 * Pi / sampleCount) * 0x7F).toInt.S))
-  val yListMul = RegInit(VecInit(for {a <- 0 to (sampleCount + 1)} yield 0.S(16.W)))
+  val yListRefer = VecInit(
+    xListRefer.map(x => (sin(x * 2 * Pi / sampleCount) * 0x7f).toInt.S)
+  )
+  val yListMul = RegInit(VecInit(for {
+    a <- 0 to (sampleCount + 1)
+  } yield 0.S(16.W)))
 
   val cnt = RegInit(0.U(16.W))
-  val run = RegInit(false.B)
+  // val run = RegInit(false.B)
 
   def calc(out: Bool) = {
     val ave = yListMul.reduce(_ + _)
-    when (ave > 0.S) {
+    when(ave > 0.S) {
       out := true.B
-    } .otherwise {
+    }.otherwise {
       out := false.B
     }
   }
@@ -65,29 +69,31 @@ class DDC(mode: Int = DDC_200M) extends Module {
   io.out.readData := 0.S
   io.out.update := update
 
-  def IndexedRefer(index: UInt) = (io.out.readData * yListRefer(index).asTypeOf(SInt(8.W))).asTypeOf(SInt(16.W))
+  def IndexedRefer(index: UInt) =
+    (io.out.readData * yListRefer(index).asTypeOf(SInt(8.W)))
+      .asTypeOf(SInt(16.W))
 
-  when (io.in.sync) {
+  when(io.in.sync) {
     yListMul(0.U) := IndexedRefer(0.U)
     cnt := 1.U
-    run := true.B
-  } .otherwise {
-    when (run) {
-      // 15 or 50 波/bit
-      when (cnt === (waveCount - 1).U) {
-        cnt := 0.U
-        // 等得 sync_start 脉冲
-        // run := io.in.sync
-        calc(out)
-        update := ~update
-      } .otherwise {
-        cnt := cnt + 1.U
-      }
-      decode(io.in.data, io.out.readData)
-      val mul = IndexedRefer(cnt)
-      yListMul(cnt) := mul
-      io.out.value := mul.asTypeOf(UInt(16.W))
+    // run := true.B
+  }.otherwise {
+    // when (run) {
+    // 15 or 50 波/bit
+    when(cnt === (waveCount - 1).U) {
+      cnt := 0.U
+      // 等得 sync_start 脉冲
+      // run := io.in.sync
+      calc(out)
+      update := ~update
+    }.otherwise {
+      cnt := cnt + 1.U
     }
+    decode(io.in.data, io.out.readData)
+    val mul = IndexedRefer(cnt)
+    yListMul(cnt) := mul
+    io.out.value := mul.asTypeOf(UInt(16.W))
+    // }
   }
 
   io.out.data := out

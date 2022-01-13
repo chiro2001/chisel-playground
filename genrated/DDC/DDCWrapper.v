@@ -24,202 +24,162 @@ module DDC(
   reg [31:0] _RAND_12;
   reg [31:0] _RAND_13;
   reg [31:0] _RAND_14;
-  reg [31:0] _RAND_15;
 `endif // RANDOMIZE_REG_INIT
-  reg [15:0] yListMul_0; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_1; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_2; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_3; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_4; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_5; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_6; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_7; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_8; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_9; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_10; // @[DDC.scala 47:25]
-  reg [15:0] yListMul_11; // @[DDC.scala 47:25]
-  reg [15:0] cnt; // @[DDC.scala 49:20]
-  reg  run; // @[DDC.scala 50:20]
-  reg  out; // @[DDC.scala 61:20]
-  reg  update; // @[DDC.scala 62:23]
-  wire [15:0] _yListMul_0_T_4 = $signed(io_out_readData) * 8'sh0; // @[DDC.scala 68:101]
-  wire [15:0] _ave_T_2 = $signed(yListMul_0) + $signed(yListMul_1); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_5 = $signed(_ave_T_2) + $signed(yListMul_2); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_8 = $signed(_ave_T_5) + $signed(yListMul_3); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_11 = $signed(_ave_T_8) + $signed(yListMul_4); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_14 = $signed(_ave_T_11) + $signed(yListMul_5); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_17 = $signed(_ave_T_14) + $signed(yListMul_6); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_20 = $signed(_ave_T_17) + $signed(yListMul_7); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_23 = $signed(_ave_T_20) + $signed(yListMul_8); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_26 = $signed(_ave_T_23) + $signed(yListMul_9); // @[DDC.scala 53:33]
-  wire [15:0] _ave_T_29 = $signed(_ave_T_26) + $signed(yListMul_10); // @[DDC.scala 53:33]
-  wire [15:0] ave = $signed(_ave_T_29) + $signed(yListMul_11); // @[DDC.scala 53:33]
-  wire  _T_1 = $signed(ave) > 16'sh0; // @[DDC.scala 54:15]
-  wire [15:0] _cnt_T_1 = cnt + 16'h1; // @[DDC.scala 84:20]
+  reg [15:0] yListMul_0; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_1; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_2; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_3; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_4; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_5; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_6; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_7; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_8; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_9; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_10; // @[DDC.scala 49:25]
+  reg [15:0] yListMul_11; // @[DDC.scala 49:25]
+  reg [15:0] cnt; // @[DDC.scala 53:20]
+  reg  out; // @[DDC.scala 65:20]
+  reg  update; // @[DDC.scala 66:23]
+  wire [15:0] _yListMul_0_T_4 = $signed(io_out_readData) * 8'sh0; // @[DDC.scala 74:16]
+  wire [15:0] _ave_T_2 = $signed(yListMul_0) + $signed(yListMul_1); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_5 = $signed(_ave_T_2) + $signed(yListMul_2); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_8 = $signed(_ave_T_5) + $signed(yListMul_3); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_11 = $signed(_ave_T_8) + $signed(yListMul_4); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_14 = $signed(_ave_T_11) + $signed(yListMul_5); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_17 = $signed(_ave_T_14) + $signed(yListMul_6); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_20 = $signed(_ave_T_17) + $signed(yListMul_7); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_23 = $signed(_ave_T_20) + $signed(yListMul_8); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_26 = $signed(_ave_T_23) + $signed(yListMul_9); // @[DDC.scala 57:33]
+  wire [15:0] _ave_T_29 = $signed(_ave_T_26) + $signed(yListMul_10); // @[DDC.scala 57:33]
+  wire [15:0] ave = $signed(_ave_T_29) + $signed(yListMul_11); // @[DDC.scala 57:33]
+  wire  _T_1 = $signed(ave) > 16'sh0; // @[DDC.scala 58:14]
+  wire [15:0] _cnt_T_1 = cnt + 16'h1; // @[DDC.scala 90:18]
   wire [7:0] _io_out_readData_T_2 = io_in_data - 8'h7f; // @[DDC.scala 37:39]
   wire [7:0] _io_out_readData_T_5 = 8'h7f - io_in_data; // @[DDC.scala 39:40]
   wire [7:0] _io_out_readData_T_8 = 8'sh0 - $signed(_io_out_readData_T_5); // @[DDC.scala 39:18]
-  wire [7:0] _GEN_4 = io_in_data > 8'h7f ? $signed(_io_out_readData_T_2) : $signed(_io_out_readData_T_8); // @[DDC.scala 36:23 DDC.scala 37:15 DDC.scala 39:15]
-  wire [7:0] _GEN_6 = 4'h1 == cnt[3:0] ? $signed(8'sh4a) : $signed(8'sh0); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_7 = 4'h2 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_6); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_8 = 4'h3 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_7); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_9 = 4'h4 == cnt[3:0] ? $signed(8'sh4a) : $signed(_GEN_8); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_10 = 4'h5 == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_9); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_11 = 4'h6 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_10); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_12 = 4'h7 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_11); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_13 = 4'h8 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_12); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_14 = 4'h9 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_13); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _mul_T_2 = 4'ha == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_14); // @[DDC.scala 68:80]
-  wire [15:0] mul = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 68:101]
-  wire [15:0] _io_out_value_T = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 89:35]
-  wire [7:0] _GEN_31 = run ? $signed(_GEN_4) : $signed(8'sh0); // @[DDC.scala 75:16 DDC.scala 65:19]
-  wire [15:0] _GEN_44 = run ? _io_out_value_T : 16'h0; // @[DDC.scala 75:16 DDC.scala 89:20 DDC.scala 64:16]
-  wire  _GEN_47 = io_in_sync | run; // @[DDC.scala 70:21 DDC.scala 73:9 DDC.scala 50:20]
-  assign io_out_data = out; // @[DDC.scala 93:15]
-  assign io_out_update = update; // @[DDC.scala 66:17]
-  assign io_out_readData = io_in_sync ? $signed(8'sh0) : $signed(_GEN_31); // @[DDC.scala 70:21 DDC.scala 65:19]
-  assign io_out_value = io_in_sync ? 16'h0 : _GEN_44; // @[DDC.scala 70:21 DDC.scala 64:16]
+  wire [7:0] _GEN_4 = io_in_data > 8'h7f ? $signed(_io_out_readData_T_2) : $signed(_io_out_readData_T_8); // @[DDC.scala 36:22 DDC.scala 37:15 DDC.scala 39:15]
+  wire [7:0] _GEN_6 = 4'h1 == cnt[3:0] ? $signed(8'sh4a) : $signed(8'sh0); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_7 = 4'h2 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_6); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_8 = 4'h3 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_7); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_9 = 4'h4 == cnt[3:0] ? $signed(8'sh4a) : $signed(_GEN_8); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_10 = 4'h5 == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_9); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_11 = 4'h6 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_10); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_12 = 4'h7 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_11); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_13 = 4'h8 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_12); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _GEN_14 = 4'h9 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_13); // @[DDC.scala 73:50 DDC.scala 73:50]
+  wire [7:0] _mul_T_2 = 4'ha == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_14); // @[DDC.scala 73:50]
+  wire [15:0] mul = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 74:16]
+  wire [15:0] _io_out_value_T = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 95:33]
+  assign io_out_data = out; // @[DDC.scala 99:15]
+  assign io_out_update = update; // @[DDC.scala 70:17]
+  assign io_out_readData = io_in_sync ? $signed(8'sh0) : $signed(_GEN_4); // @[DDC.scala 76:20 DDC.scala 69:19]
+  assign io_out_value = io_in_sync ? 16'h0 : _io_out_value_T; // @[DDC.scala 76:20 DDC.scala 68:16 DDC.scala 95:18]
   always @(posedge clock) begin
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_0 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (io_in_sync) begin // @[DDC.scala 70:21]
-      yListMul_0 <= _yListMul_0_T_4; // @[DDC.scala 71:19]
-    end else if (run) begin // @[DDC.scala 75:16]
-      if (4'h0 == cnt[3:0]) begin // @[DDC.scala 88:21]
-        yListMul_0 <= mul; // @[DDC.scala 88:21]
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_0 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (io_in_sync) begin // @[DDC.scala 76:20]
+      yListMul_0 <= _yListMul_0_T_4; // @[DDC.scala 77:19]
+    end else if (4'h0 == cnt[3:0]) begin // @[DDC.scala 94:19]
+      yListMul_0 <= mul; // @[DDC.scala 94:19]
+    end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_1 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h1 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_1 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_1 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h1 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_1 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_2 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h2 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_2 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_2 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h2 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_2 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_3 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h3 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_3 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_3 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h3 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_3 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_4 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h4 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_4 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_4 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h4 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_4 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_5 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h5 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_5 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_5 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h5 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_5 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_6 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h6 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_6 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_6 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h6 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_6 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_7 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h7 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_7 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_7 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h7 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_7 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_8 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h8 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_8 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_8 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h8 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_8 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_9 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'h9 == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_9 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_9 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'h9 == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_9 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_10 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'ha == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_10 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_10 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'ha == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_10 <= mul; // @[DDC.scala 88:21]
-        end
+    if (reset) begin // @[DDC.scala 49:25]
+      yListMul_11 <= 16'sh0; // @[DDC.scala 49:25]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (4'hb == cnt[3:0]) begin // @[DDC.scala 94:19]
+        yListMul_11 <= mul; // @[DDC.scala 94:19]
       end
     end
-    if (reset) begin // @[DDC.scala 47:25]
-      yListMul_11 <= 16'sh0; // @[DDC.scala 47:25]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (4'hb == cnt[3:0]) begin // @[DDC.scala 88:21]
-          yListMul_11 <= mul; // @[DDC.scala 88:21]
-        end
-      end
-    end
-    if (reset) begin // @[DDC.scala 49:20]
-      cnt <= 16'h0; // @[DDC.scala 49:20]
-    end else if (io_in_sync) begin // @[DDC.scala 70:21]
-      cnt <= 16'h1; // @[DDC.scala 72:9]
-    end else if (run) begin // @[DDC.scala 75:16]
-      if (cnt == 16'h31) begin // @[DDC.scala 77:40]
-        cnt <= 16'h0; // @[DDC.scala 78:13]
-      end else begin
-        cnt <= _cnt_T_1; // @[DDC.scala 84:13]
-      end
-    end
-    if (reset) begin // @[DDC.scala 50:20]
-      run <= 1'h0; // @[DDC.scala 50:20]
+    if (reset) begin // @[DDC.scala 53:20]
+      cnt <= 16'h0; // @[DDC.scala 53:20]
+    end else if (io_in_sync) begin // @[DDC.scala 76:20]
+      cnt <= 16'h1; // @[DDC.scala 78:9]
+    end else if (cnt == 16'h31) begin // @[DDC.scala 83:37]
+      cnt <= 16'h0; // @[DDC.scala 84:11]
     end else begin
-      run <= _GEN_47;
+      cnt <= _cnt_T_1; // @[DDC.scala 90:11]
     end
-    if (reset) begin // @[DDC.scala 61:20]
-      out <= 1'h0; // @[DDC.scala 61:20]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (cnt == 16'h31) begin // @[DDC.scala 77:40]
-          out <= _T_1;
-        end
+    if (reset) begin // @[DDC.scala 65:20]
+      out <= 1'h0; // @[DDC.scala 65:20]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (cnt == 16'h31) begin // @[DDC.scala 83:37]
+        out <= _T_1;
       end
     end
-    if (reset) begin // @[DDC.scala 62:23]
-      update <= 1'h0; // @[DDC.scala 62:23]
-    end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
-      if (run) begin // @[DDC.scala 75:16]
-        if (cnt == 16'h31) begin // @[DDC.scala 77:40]
-          update <= ~update; // @[DDC.scala 82:16]
-        end
+    if (reset) begin // @[DDC.scala 66:23]
+      update <= 1'h0; // @[DDC.scala 66:23]
+    end else if (!(io_in_sync)) begin // @[DDC.scala 76:20]
+      if (cnt == 16'h31) begin // @[DDC.scala 83:37]
+        update <= ~update; // @[DDC.scala 88:14]
       end
     end
   end
@@ -286,11 +246,9 @@ initial begin
   _RAND_12 = {1{`RANDOM}};
   cnt = _RAND_12[15:0];
   _RAND_13 = {1{`RANDOM}};
-  run = _RAND_13[0:0];
+  out = _RAND_13[0:0];
   _RAND_14 = {1{`RANDOM}};
-  out = _RAND_14[0:0];
-  _RAND_15 = {1{`RANDOM}};
-  update = _RAND_15[0:0];
+  update = _RAND_14[0:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
@@ -309,15 +267,15 @@ module DDCWrapper(
   input         io_clock,
   input         io_resetN
 );
-  wire  module__clock; // @[DDC.scala 113:24]
-  wire  module__reset; // @[DDC.scala 113:24]
-  wire [7:0] module__io_in_data; // @[DDC.scala 113:24]
-  wire  module__io_in_sync; // @[DDC.scala 113:24]
-  wire  module__io_out_data; // @[DDC.scala 113:24]
-  wire  module__io_out_update; // @[DDC.scala 113:24]
-  wire [7:0] module__io_out_readData; // @[DDC.scala 113:24]
-  wire [15:0] module__io_out_value; // @[DDC.scala 113:24]
-  DDC module_ ( // @[DDC.scala 113:24]
+  wire  module__clock; // @[DDC.scala 119:24]
+  wire  module__reset; // @[DDC.scala 119:24]
+  wire [7:0] module__io_in_data; // @[DDC.scala 119:24]
+  wire  module__io_in_sync; // @[DDC.scala 119:24]
+  wire  module__io_out_data; // @[DDC.scala 119:24]
+  wire  module__io_out_update; // @[DDC.scala 119:24]
+  wire [7:0] module__io_out_readData; // @[DDC.scala 119:24]
+  wire [15:0] module__io_out_value; // @[DDC.scala 119:24]
+  DDC module_ ( // @[DDC.scala 119:24]
     .clock(module__clock),
     .reset(module__reset),
     .io_in_data(module__io_in_data),
@@ -327,12 +285,12 @@ module DDCWrapper(
     .io_out_readData(module__io_out_readData),
     .io_out_value(module__io_out_value)
   );
-  assign io_out_data = module__io_out_data; // @[DDC.scala 115:19]
-  assign io_out_update = module__io_out_update; // @[DDC.scala 115:19]
-  assign io_out_readData = module__io_out_readData; // @[DDC.scala 115:19]
-  assign io_out_value = module__io_out_value; // @[DDC.scala 115:19]
+  assign io_out_data = module__io_out_data; // @[DDC.scala 121:19]
+  assign io_out_update = module__io_out_update; // @[DDC.scala 121:19]
+  assign io_out_readData = module__io_out_readData; // @[DDC.scala 121:19]
+  assign io_out_value = module__io_out_value; // @[DDC.scala 121:19]
   assign module__clock = io_clock;
-  assign module__reset = ~io_resetN; // @[DDC.scala 112:31]
-  assign module__io_in_data = io_in_data; // @[DDC.scala 114:18]
-  assign module__io_in_sync = io_in_sync; // @[DDC.scala 114:18]
+  assign module__reset = ~io_resetN; // @[DDC.scala 118:31]
+  assign module__io_in_data = io_in_data; // @[DDC.scala 120:18]
+  assign module__io_in_sync = io_in_sync; // @[DDC.scala 120:18]
 endmodule
