@@ -18,15 +18,13 @@ import DDCMode._
 import DDCOffset._
 
 @chiselName
-class DDC(mode: Int = DDC_60M) extends Module {
+class DDC(mode: Int = DDC_200M) extends Module {
   val io = IO(new Bundle {
     val in = Input(new Bundle {
-      // 在快时钟域（120M/125M）
       val data = UInt(8.W)
       val sync = Bool()
     })
     val out = Output(new Bundle {
-      // 慢时钟域（直接分频）
       val data = Bool()
       val update = Bool()
       val readData = SInt(8.W)
@@ -42,15 +40,15 @@ class DDC(mode: Int = DDC_60M) extends Module {
     }
   }
 
-  val xListRefer = if (mode == DDC_60M) Seq.range(0, 3) else Seq.range(0, 10)
-  val yListRefer = VecInit(if (mode == DDC_60M) xListRefer.map(x => (sin(x * 2 * Pi / 3) * 0x7F).toInt.S) else xListRefer.map(x => (sin(x * 2 * Pi / 10) * 0x7F).toInt.S))
-
-  val yListMul = RegInit(VecInit(for {a <- 0 to (if (mode == DDC_60M) 3 else 10)} yield 0.S(16.W)))
+  val sampleCount = if (mode == DDC_60M) 3 else 10
+  val waveCount = if (mode == DDC_60M) 15 else 50
+  val xListRefer = Seq.range(0, sampleCount + 1)
+  val yListRefer = VecInit(xListRefer.map(x => (sin(x * 2 * Pi / sampleCount) * 0x7F).toInt.S))
+  val yListMul = RegInit(VecInit(for {a <- 0 to (sampleCount + 1)} yield 0.S(16.W)))
 
   val cnt = RegInit(0.U(16.W))
   val run = RegInit(false.B)
 
-  // For 60M Only
   def calc(out: Bool) = {
     val ave = yListMul.reduce(_ + _)
     when (ave > 0.S) {
@@ -67,14 +65,16 @@ class DDC(mode: Int = DDC_60M) extends Module {
   io.out.readData := 0.S
   io.out.update := update
 
+  def IndexedRefer(index: UInt) = (io.out.readData * yListRefer(index).asTypeOf(SInt(8.W))).asTypeOf(SInt(16.W))
+
   when (io.in.sync) {
-    yListMul(0.U) := (io.out.readData * yListRefer(0).asTypeOf(SInt(8.W))).asTypeOf(SInt(16.W));
+    yListMul(0.U) := IndexedRefer(0.U)
     cnt := 1.U
     run := true.B
   } .otherwise {
     when (run) {
-      // 15 or 波/bit
-      when (cnt === ((if (mode == DDC_60M) 15 else 50) - 1).U) {
+      // 15 or 50 波/bit
+      when (cnt === (waveCount - 1).U) {
         cnt := 0.U
         run := io.in.sync
         calc(out)
@@ -83,7 +83,7 @@ class DDC(mode: Int = DDC_60M) extends Module {
         cnt := cnt + 1.U
       }
       decode(io.in.data, io.out.readData)
-      val mul = (io.out.readData * yListRefer(cnt).asTypeOf(SInt(8.W))).asTypeOf(SInt(16.W))
+      val mul = IndexedRefer(cnt)
       yListMul(cnt) := mul
       io.out.value := mul.asTypeOf(UInt(16.W))
     }
@@ -93,15 +93,13 @@ class DDC(mode: Int = DDC_60M) extends Module {
 }
 
 @chiselName
-class DDCWrapper(mode: Int = DDC_60M) extends RawModule {
+class DDCWrapper(mode: Int = DDC_200M) extends RawModule {
   val io = IO(new Bundle {
     val in = Input(new Bundle {
-      // 在快时钟域（120M/125M）
       val data = UInt(8.W)
       val sync = Bool()
     })
     val out = Output(new Bundle {
-      // 慢时钟域（直接分频）
       val data = Bool()
       val update = Bool()
       val readData = SInt(8.W)

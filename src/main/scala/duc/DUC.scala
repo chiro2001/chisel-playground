@@ -29,25 +29,27 @@ class DUC(mode: Int = DUC_120M) extends Module {
     })
   })
 
-  val xList = if (mode == DUC_120M) Seq.range(0, 7) else Seq.range(0, 26)
-  val yList = VecInit(if (mode == DUC_120M) xList.map(x => (sin(x * 2 * Pi / 6) * 0x7F).toInt.S) else xList.map(x => (sin(x * 8 * Pi / 25) * 0x7F).toInt.S))
+  val sampleCount = if (mode == DUC_120M) 6 else 25
+  val xList = Seq.range(0, sampleCount + 1)
+  val yList = VecInit(xList.map(x => (sin(x * (if (mode == DUC_120M) 2 else 8) * Pi / 6) * 0x7F).toInt.S))
+  def IndexedData(index: UInt) = (yList(index) * Mux(io.in.data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
 
   val run = RegInit(false.B)
   val cnt = RegInit(0.U(8.W))
   io.out.dac := 0.U
   when (io.in.sync) {
-    io.out.dac := (yList(0) * Mux(io.in.data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
+    io.out.dac := IndexedData(0.U)
     run := true.B
     cnt := 0.U
   }
   when (run) {
-    when (cnt === ((if (mode == DUC_120M) 6 else 25) - 1).U) {
+    when (cnt === (sampleCount - 1).U) {
       cnt := 0.U
       run := io.in.sync
     } .otherwise {
       cnt := cnt + 1.U
     }
-    io.out.dac := (yList(cnt) * Mux(io.in.data, 1.S, -1.S) + 0x7F.S).asTypeOf(UInt(8.W))
+    io.out.dac := IndexedData(cnt)
   }
 }
 
