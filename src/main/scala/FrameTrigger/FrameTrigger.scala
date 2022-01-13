@@ -16,7 +16,7 @@ class FrameTrigger(width: Int = 8, chunkSize: Int = 3) extends Module {
     })
   })
 
-  val buf = RegInit(VecInit(for { a <- 0 to 3 } yield 0.U(width.W)))
+  val buf = RegInit(VecInit(for { a <- 0 to 3 } yield 127.U(width.W)))
   val cnt = RegInit(0.U(8.W))
   val threshold = (sqrt(3) * 127).toInt.U
   val ave = buf

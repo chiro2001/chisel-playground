@@ -6,10 +6,10 @@ circuit FrameTriggerWrapper :
     output io : {flip in : {data : UInt<8>, clear : UInt<1>}, out : {trigger : UInt<1>}}
     
     wire _buf_WIRE : UInt<8>[4] @[FrameTrigger.scala 19:28]
-    _buf_WIRE[0] <= UInt<8>("h00") @[FrameTrigger.scala 19:28]
-    _buf_WIRE[1] <= UInt<8>("h00") @[FrameTrigger.scala 19:28]
-    _buf_WIRE[2] <= UInt<8>("h00") @[FrameTrigger.scala 19:28]
-    _buf_WIRE[3] <= UInt<8>("h00") @[FrameTrigger.scala 19:28]
+    _buf_WIRE[0] <= UInt<8>("h07f") @[FrameTrigger.scala 19:28]
+    _buf_WIRE[1] <= UInt<8>("h07f") @[FrameTrigger.scala 19:28]
+    _buf_WIRE[2] <= UInt<8>("h07f") @[FrameTrigger.scala 19:28]
+    _buf_WIRE[3] <= UInt<8>("h07f") @[FrameTrigger.scala 19:28]
     reg buf : UInt<8>[4], clock with : (reset => (reset, _buf_WIRE)) @[FrameTrigger.scala 19:20]
     reg cnt : UInt<8>, clock with : (reset => (reset, UInt<8>("h00"))) @[FrameTrigger.scala 20:20]
     node _ave_T = lt(buf[0], UInt<7>("h07f")) @[FrameTrigger.scala 24:14]

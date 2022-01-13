@@ -46,22 +46,22 @@ module FrameTrigger(
   assign io_out_trigger = (io_in_clear | run) & _T_2; // @[FrameTrigger.scala 30:28 FrameTrigger.scala 29:18]
   always @(posedge clock) begin
     if (reset) begin // @[FrameTrigger.scala 19:20]
-      buf_0 <= 8'h0; // @[FrameTrigger.scala 19:20]
+      buf_0 <= 8'h7f; // @[FrameTrigger.scala 19:20]
     end else if (2'h0 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
       buf_0 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 19:20]
-      buf_1 <= 8'h0; // @[FrameTrigger.scala 19:20]
+      buf_1 <= 8'h7f; // @[FrameTrigger.scala 19:20]
     end else if (2'h1 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
       buf_1 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 19:20]
-      buf_2 <= 8'h0; // @[FrameTrigger.scala 19:20]
+      buf_2 <= 8'h7f; // @[FrameTrigger.scala 19:20]
     end else if (2'h2 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
       buf_2 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 19:20]
-      buf_3 <= 8'h0; // @[FrameTrigger.scala 19:20]
+      buf_3 <= 8'h7f; // @[FrameTrigger.scala 19:20]
     end else if (2'h3 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
       buf_3 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
