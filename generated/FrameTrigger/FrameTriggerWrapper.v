@@ -39,32 +39,31 @@ module FrameTrigger(
   wire [9:0] ave = _ave_T_27 + _ave_WIRE_3; // @[FrameTrigger.scala 26:15]
   reg  run; // @[FrameTrigger.scala 27:20]
   wire [7:0] _cnt_T_1 = cnt + 8'h1; // @[FrameTrigger.scala 32:18]
-  wire  _T_2 = ave >= 10'hdb; // @[FrameTrigger.scala 34:16]
-  wire  _GEN_2 = cnt != 8'h2 ? 1'h0 : _T_2; // @[FrameTrigger.scala 31:37 FrameTrigger.scala 29:18]
-  wire  _GEN_3 = cnt != 8'h2 ? run : io_in_clear; // @[FrameTrigger.scala 31:37 FrameTrigger.scala 27:20 FrameTrigger.scala 40:11]
-  wire  _GEN_6 = io_in_clear | run ? _GEN_3 : run; // @[FrameTrigger.scala 30:28 FrameTrigger.scala 27:20]
-  wire  _GEN_7 = io_in_clear | _GEN_6; // @[FrameTrigger.scala 43:21 FrameTrigger.scala 44:9]
-  assign io_out_trigger = (io_in_clear | run) & _GEN_2; // @[FrameTrigger.scala 30:28 FrameTrigger.scala 29:18]
+  wire  _T_2 = ave >= 10'hdb; // @[FrameTrigger.scala 36:14]
+  wire  _GEN_2 = ave >= 10'hdb ? 1'h0 : run; // @[FrameTrigger.scala 36:28 FrameTrigger.scala 38:11 FrameTrigger.scala 27:20]
+  wire  _GEN_5 = io_in_clear | run ? _GEN_2 : run; // @[FrameTrigger.scala 30:28 FrameTrigger.scala 27:20]
+  wire  _GEN_6 = io_in_clear | _GEN_5; // @[FrameTrigger.scala 44:21 FrameTrigger.scala 45:9]
+  assign io_out_trigger = (io_in_clear | run) & _T_2; // @[FrameTrigger.scala 30:28 FrameTrigger.scala 29:18]
   always @(posedge clock) begin
     if (reset) begin // @[FrameTrigger.scala 19:20]
       buf_0 <= 8'h0; // @[FrameTrigger.scala 19:20]
-    end else if (2'h0 == cnt[1:0]) begin // @[FrameTrigger.scala 46:12]
-      buf_0 <= io_in_data; // @[FrameTrigger.scala 46:12]
+    end else if (2'h0 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
+      buf_0 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 19:20]
       buf_1 <= 8'h0; // @[FrameTrigger.scala 19:20]
-    end else if (2'h1 == cnt[1:0]) begin // @[FrameTrigger.scala 46:12]
-      buf_1 <= io_in_data; // @[FrameTrigger.scala 46:12]
+    end else if (2'h1 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
+      buf_1 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 19:20]
       buf_2 <= 8'h0; // @[FrameTrigger.scala 19:20]
-    end else if (2'h2 == cnt[1:0]) begin // @[FrameTrigger.scala 46:12]
-      buf_2 <= io_in_data; // @[FrameTrigger.scala 46:12]
+    end else if (2'h2 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
+      buf_2 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 19:20]
       buf_3 <= 8'h0; // @[FrameTrigger.scala 19:20]
-    end else if (2'h3 == cnt[1:0]) begin // @[FrameTrigger.scala 46:12]
-      buf_3 <= io_in_data; // @[FrameTrigger.scala 46:12]
+    end else if (2'h3 == cnt[1:0]) begin // @[FrameTrigger.scala 47:12]
+      buf_3 <= io_in_data; // @[FrameTrigger.scala 47:12]
     end
     if (reset) begin // @[FrameTrigger.scala 20:20]
       cnt <= 8'h0; // @[FrameTrigger.scala 20:20]
@@ -72,10 +71,10 @@ module FrameTrigger(
       if (cnt != 8'h2) begin // @[FrameTrigger.scala 31:37]
         cnt <= _cnt_T_1; // @[FrameTrigger.scala 32:11]
       end else begin
-        cnt <= 8'h0; // @[FrameTrigger.scala 39:11]
+        cnt <= 8'h0; // @[FrameTrigger.scala 34:11]
       end
     end
-    run <= reset | _GEN_7; // @[FrameTrigger.scala 27:20 FrameTrigger.scala 27:20]
+    run <= reset | _GEN_6; // @[FrameTrigger.scala 27:20 FrameTrigger.scala 27:20]
   end
 // Register and memory initialization
 `ifdef RANDOMIZE_GARBAGE_ASSIGN
@@ -140,21 +139,21 @@ module FrameTriggerWrapper(
   input        io_clock,
   input        io_resetN
 );
-  wire  module__clock; // @[FrameTrigger.scala 64:24]
-  wire  module__reset; // @[FrameTrigger.scala 64:24]
-  wire [7:0] module__io_in_data; // @[FrameTrigger.scala 64:24]
-  wire  module__io_in_clear; // @[FrameTrigger.scala 64:24]
-  wire  module__io_out_trigger; // @[FrameTrigger.scala 64:24]
-  FrameTrigger module_ ( // @[FrameTrigger.scala 64:24]
+  wire  module__clock; // @[FrameTrigger.scala 65:24]
+  wire  module__reset; // @[FrameTrigger.scala 65:24]
+  wire [7:0] module__io_in_data; // @[FrameTrigger.scala 65:24]
+  wire  module__io_in_clear; // @[FrameTrigger.scala 65:24]
+  wire  module__io_out_trigger; // @[FrameTrigger.scala 65:24]
+  FrameTrigger module_ ( // @[FrameTrigger.scala 65:24]
     .clock(module__clock),
     .reset(module__reset),
     .io_in_data(module__io_in_data),
     .io_in_clear(module__io_in_clear),
     .io_out_trigger(module__io_out_trigger)
   );
-  assign io_out_trigger = module__io_out_trigger; // @[FrameTrigger.scala 66:19]
+  assign io_out_trigger = module__io_out_trigger; // @[FrameTrigger.scala 67:19]
   assign module__clock = io_clock;
-  assign module__reset = ~io_resetN; // @[FrameTrigger.scala 63:31]
-  assign module__io_in_data = io_in_data; // @[FrameTrigger.scala 65:18]
-  assign module__io_in_clear = io_in_clear; // @[FrameTrigger.scala 65:18]
+  assign module__reset = ~io_resetN; // @[FrameTrigger.scala 64:31]
+  assign module__io_in_data = io_in_data; // @[FrameTrigger.scala 66:18]
+  assign module__io_in_clear = io_in_clear; // @[FrameTrigger.scala 66:18]
 endmodule

@@ -31,14 +31,15 @@ class FrameTrigger(width: Int = 8, chunkSize: Int = 3) extends Module {
     when(cnt =/= (chunkSize - 1).U) {
       cnt := cnt + 1.U
     }.otherwise {
-      when(ave >= threshold) {
-        io.out.trigger := true.B
-      }.otherwise {
-        io.out.trigger := false.B
-      }
       cnt := 0.U
-      run := io.in.clear
     }
+    when(ave >= threshold) {
+      io.out.trigger := true.B
+      run := false.B
+    }.otherwise {
+      io.out.trigger := false.B
+    }
+
   }
   when(io.in.clear) {
     run := true.B
