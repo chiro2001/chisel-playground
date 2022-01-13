@@ -76,7 +76,8 @@ class DDC(mode: Int = DDC_200M) extends Module {
       // 15 or 50 波/bit
       when (cnt === (waveCount - 1).U) {
         cnt := 0.U
-        run := io.in.sync
+        // 等得 sync_start 脉冲
+        // run := io.in.sync
         calc(out)
         update := ~update
       } .otherwise {

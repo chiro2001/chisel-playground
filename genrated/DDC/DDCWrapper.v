@@ -55,48 +55,46 @@ module DDC(
   wire [15:0] _ave_T_29 = $signed(_ave_T_26) + $signed(yListMul_10); // @[DDC.scala 53:33]
   wire [15:0] ave = $signed(_ave_T_29) + $signed(yListMul_11); // @[DDC.scala 53:33]
   wire  _T_1 = $signed(ave) > 16'sh0; // @[DDC.scala 54:15]
-  wire [15:0] _cnt_T_1 = cnt + 16'h1; // @[DDC.scala 83:20]
-  wire  _GEN_2 = cnt == 16'h31 ? io_in_sync : run; // @[DDC.scala 77:40 DDC.scala 79:13 DDC.scala 50:20]
+  wire [15:0] _cnt_T_1 = cnt + 16'h1; // @[DDC.scala 84:20]
   wire [7:0] _io_out_readData_T_2 = io_in_data - 8'h7f; // @[DDC.scala 37:39]
   wire [7:0] _io_out_readData_T_5 = 8'h7f - io_in_data; // @[DDC.scala 39:40]
   wire [7:0] _io_out_readData_T_8 = 8'sh0 - $signed(_io_out_readData_T_5); // @[DDC.scala 39:18]
-  wire [7:0] _GEN_5 = io_in_data > 8'h7f ? $signed(_io_out_readData_T_2) : $signed(_io_out_readData_T_8); // @[DDC.scala 36:23 DDC.scala 37:15 DDC.scala 39:15]
-  wire [7:0] _GEN_7 = 4'h1 == cnt[3:0] ? $signed(8'sh4a) : $signed(8'sh0); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_8 = 4'h2 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_7); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_9 = 4'h3 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_8); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_10 = 4'h4 == cnt[3:0] ? $signed(8'sh4a) : $signed(_GEN_9); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_11 = 4'h5 == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_10); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_12 = 4'h6 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_11); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_13 = 4'h7 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_12); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_14 = 4'h8 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_13); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _GEN_15 = 4'h9 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_14); // @[DDC.scala 68:80 DDC.scala 68:80]
-  wire [7:0] _mul_T_2 = 4'ha == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_15); // @[DDC.scala 68:80]
+  wire [7:0] _GEN_4 = io_in_data > 8'h7f ? $signed(_io_out_readData_T_2) : $signed(_io_out_readData_T_8); // @[DDC.scala 36:23 DDC.scala 37:15 DDC.scala 39:15]
+  wire [7:0] _GEN_6 = 4'h1 == cnt[3:0] ? $signed(8'sh4a) : $signed(8'sh0); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_7 = 4'h2 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_6); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_8 = 4'h3 == cnt[3:0] ? $signed(8'sh78) : $signed(_GEN_7); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_9 = 4'h4 == cnt[3:0] ? $signed(8'sh4a) : $signed(_GEN_8); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_10 = 4'h5 == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_9); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_11 = 4'h6 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_10); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_12 = 4'h7 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_11); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_13 = 4'h8 == cnt[3:0] ? $signed(-8'sh78) : $signed(_GEN_12); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _GEN_14 = 4'h9 == cnt[3:0] ? $signed(-8'sh4a) : $signed(_GEN_13); // @[DDC.scala 68:80 DDC.scala 68:80]
+  wire [7:0] _mul_T_2 = 4'ha == cnt[3:0] ? $signed(8'sh0) : $signed(_GEN_14); // @[DDC.scala 68:80]
   wire [15:0] mul = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 68:101]
-  wire [15:0] _io_out_value_T = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 88:35]
-  wire  _GEN_30 = run ? _GEN_2 : run; // @[DDC.scala 75:16 DDC.scala 50:20]
-  wire [7:0] _GEN_33 = run ? $signed(_GEN_5) : $signed(8'sh0); // @[DDC.scala 75:16 DDC.scala 65:19]
-  wire [15:0] _GEN_46 = run ? _io_out_value_T : 16'h0; // @[DDC.scala 75:16 DDC.scala 88:20 DDC.scala 64:16]
-  wire  _GEN_49 = io_in_sync | _GEN_30; // @[DDC.scala 70:21 DDC.scala 73:9]
-  assign io_out_data = out; // @[DDC.scala 92:15]
+  wire [15:0] _io_out_value_T = $signed(io_out_readData) * $signed(_mul_T_2); // @[DDC.scala 89:35]
+  wire [7:0] _GEN_31 = run ? $signed(_GEN_4) : $signed(8'sh0); // @[DDC.scala 75:16 DDC.scala 65:19]
+  wire [15:0] _GEN_44 = run ? _io_out_value_T : 16'h0; // @[DDC.scala 75:16 DDC.scala 89:20 DDC.scala 64:16]
+  wire  _GEN_47 = io_in_sync | run; // @[DDC.scala 70:21 DDC.scala 73:9 DDC.scala 50:20]
+  assign io_out_data = out; // @[DDC.scala 93:15]
   assign io_out_update = update; // @[DDC.scala 66:17]
-  assign io_out_readData = io_in_sync ? $signed(8'sh0) : $signed(_GEN_33); // @[DDC.scala 70:21 DDC.scala 65:19]
-  assign io_out_value = io_in_sync ? 16'h0 : _GEN_46; // @[DDC.scala 70:21 DDC.scala 64:16]
+  assign io_out_readData = io_in_sync ? $signed(8'sh0) : $signed(_GEN_31); // @[DDC.scala 70:21 DDC.scala 65:19]
+  assign io_out_value = io_in_sync ? 16'h0 : _GEN_44; // @[DDC.scala 70:21 DDC.scala 64:16]
   always @(posedge clock) begin
     if (reset) begin // @[DDC.scala 47:25]
       yListMul_0 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (io_in_sync) begin // @[DDC.scala 70:21]
       yListMul_0 <= _yListMul_0_T_4; // @[DDC.scala 71:19]
     end else if (run) begin // @[DDC.scala 75:16]
-      if (4'h0 == cnt[3:0]) begin // @[DDC.scala 87:21]
-        yListMul_0 <= mul; // @[DDC.scala 87:21]
+      if (4'h0 == cnt[3:0]) begin // @[DDC.scala 88:21]
+        yListMul_0 <= mul; // @[DDC.scala 88:21]
       end
     end
     if (reset) begin // @[DDC.scala 47:25]
       yListMul_1 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h1 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_1 <= mul; // @[DDC.scala 87:21]
+        if (4'h1 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_1 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -104,8 +102,8 @@ module DDC(
       yListMul_2 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h2 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_2 <= mul; // @[DDC.scala 87:21]
+        if (4'h2 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_2 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -113,8 +111,8 @@ module DDC(
       yListMul_3 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h3 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_3 <= mul; // @[DDC.scala 87:21]
+        if (4'h3 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_3 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -122,8 +120,8 @@ module DDC(
       yListMul_4 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h4 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_4 <= mul; // @[DDC.scala 87:21]
+        if (4'h4 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_4 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -131,8 +129,8 @@ module DDC(
       yListMul_5 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h5 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_5 <= mul; // @[DDC.scala 87:21]
+        if (4'h5 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_5 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -140,8 +138,8 @@ module DDC(
       yListMul_6 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h6 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_6 <= mul; // @[DDC.scala 87:21]
+        if (4'h6 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_6 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -149,8 +147,8 @@ module DDC(
       yListMul_7 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h7 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_7 <= mul; // @[DDC.scala 87:21]
+        if (4'h7 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_7 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -158,8 +156,8 @@ module DDC(
       yListMul_8 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h8 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_8 <= mul; // @[DDC.scala 87:21]
+        if (4'h8 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_8 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -167,8 +165,8 @@ module DDC(
       yListMul_9 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'h9 == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_9 <= mul; // @[DDC.scala 87:21]
+        if (4'h9 == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_9 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -176,8 +174,8 @@ module DDC(
       yListMul_10 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'ha == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_10 <= mul; // @[DDC.scala 87:21]
+        if (4'ha == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_10 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -185,8 +183,8 @@ module DDC(
       yListMul_11 <= 16'sh0; // @[DDC.scala 47:25]
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
-        if (4'hb == cnt[3:0]) begin // @[DDC.scala 87:21]
-          yListMul_11 <= mul; // @[DDC.scala 87:21]
+        if (4'hb == cnt[3:0]) begin // @[DDC.scala 88:21]
+          yListMul_11 <= mul; // @[DDC.scala 88:21]
         end
       end
     end
@@ -198,13 +196,13 @@ module DDC(
       if (cnt == 16'h31) begin // @[DDC.scala 77:40]
         cnt <= 16'h0; // @[DDC.scala 78:13]
       end else begin
-        cnt <= _cnt_T_1; // @[DDC.scala 83:13]
+        cnt <= _cnt_T_1; // @[DDC.scala 84:13]
       end
     end
     if (reset) begin // @[DDC.scala 50:20]
       run <= 1'h0; // @[DDC.scala 50:20]
     end else begin
-      run <= _GEN_49;
+      run <= _GEN_47;
     end
     if (reset) begin // @[DDC.scala 61:20]
       out <= 1'h0; // @[DDC.scala 61:20]
@@ -220,7 +218,7 @@ module DDC(
     end else if (!(io_in_sync)) begin // @[DDC.scala 70:21]
       if (run) begin // @[DDC.scala 75:16]
         if (cnt == 16'h31) begin // @[DDC.scala 77:40]
-          update <= ~update; // @[DDC.scala 81:16]
+          update <= ~update; // @[DDC.scala 82:16]
         end
       end
     end
@@ -311,15 +309,15 @@ module DDCWrapper(
   input         io_clock,
   input         io_resetN
 );
-  wire  module__clock; // @[DDC.scala 112:24]
-  wire  module__reset; // @[DDC.scala 112:24]
-  wire [7:0] module__io_in_data; // @[DDC.scala 112:24]
-  wire  module__io_in_sync; // @[DDC.scala 112:24]
-  wire  module__io_out_data; // @[DDC.scala 112:24]
-  wire  module__io_out_update; // @[DDC.scala 112:24]
-  wire [7:0] module__io_out_readData; // @[DDC.scala 112:24]
-  wire [15:0] module__io_out_value; // @[DDC.scala 112:24]
-  DDC module_ ( // @[DDC.scala 112:24]
+  wire  module__clock; // @[DDC.scala 113:24]
+  wire  module__reset; // @[DDC.scala 113:24]
+  wire [7:0] module__io_in_data; // @[DDC.scala 113:24]
+  wire  module__io_in_sync; // @[DDC.scala 113:24]
+  wire  module__io_out_data; // @[DDC.scala 113:24]
+  wire  module__io_out_update; // @[DDC.scala 113:24]
+  wire [7:0] module__io_out_readData; // @[DDC.scala 113:24]
+  wire [15:0] module__io_out_value; // @[DDC.scala 113:24]
+  DDC module_ ( // @[DDC.scala 113:24]
     .clock(module__clock),
     .reset(module__reset),
     .io_in_data(module__io_in_data),
@@ -329,12 +327,12 @@ module DDCWrapper(
     .io_out_readData(module__io_out_readData),
     .io_out_value(module__io_out_value)
   );
-  assign io_out_data = module__io_out_data; // @[DDC.scala 114:19]
-  assign io_out_update = module__io_out_update; // @[DDC.scala 114:19]
-  assign io_out_readData = module__io_out_readData; // @[DDC.scala 114:19]
-  assign io_out_value = module__io_out_value; // @[DDC.scala 114:19]
+  assign io_out_data = module__io_out_data; // @[DDC.scala 115:19]
+  assign io_out_update = module__io_out_update; // @[DDC.scala 115:19]
+  assign io_out_readData = module__io_out_readData; // @[DDC.scala 115:19]
+  assign io_out_value = module__io_out_value; // @[DDC.scala 115:19]
   assign module__clock = io_clock;
-  assign module__reset = ~io_resetN; // @[DDC.scala 111:31]
-  assign module__io_in_data = io_in_data; // @[DDC.scala 113:18]
-  assign module__io_in_sync = io_in_sync; // @[DDC.scala 113:18]
+  assign module__reset = ~io_resetN; // @[DDC.scala 112:31]
+  assign module__io_in_data = io_in_data; // @[DDC.scala 114:18]
+  assign module__io_in_sync = io_in_sync; // @[DDC.scala 114:18]
 endmodule
