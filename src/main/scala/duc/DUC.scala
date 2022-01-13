@@ -38,7 +38,7 @@ class DUC(mode: Int = DUC_120M) extends Module {
 
   val run = RegInit(false.B)
   val cnt = RegInit(0.U(8.W))
-  io.out.dac := 0.U
+  io.out.dac := 0.U + 127.U
   when (io.in.sync) {
     io.out.dac := IndexedData(0.U)
     run := true.B
