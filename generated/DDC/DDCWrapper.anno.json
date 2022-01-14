@@ -8,14 +8,6 @@
     ]
   },
   {
-    "class":"firrtl.transforms.CombinationalPath",
-    "sink":"~DDCWrapper|DDCWrapper>io_out_value",
-    "sources":[
-      "~DDCWrapper|DDCWrapper>io_in_sync",
-      "~DDCWrapper|DDCWrapper>io_in_data"
-    ]
-  },
-  {
     "class":"firrtl.EmitCircuitAnnotation",
     "emitter":"firrtl.VerilogEmitter"
   },

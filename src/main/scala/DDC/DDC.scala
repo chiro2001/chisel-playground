@@ -28,7 +28,7 @@ class DDC(mode: Int = DDC_200M) extends Module {
       val data = Bool()
       val update = Bool()
       val readData = SInt(8.W)
-      val value = UInt(16.W)
+      val ave = SInt(8.W)
     })
   })
 
@@ -52,9 +52,11 @@ class DDC(mode: Int = DDC_200M) extends Module {
 
   val cnt = RegInit(0.U(16.W))
   // val run = RegInit(false.B)
+  val ave = yListMul.reduce(_ + _)
+
+  io.out.ave := ave
 
   def calc(out: Bool) = {
-    val ave = yListMul.reduce(_ + _)
     when(ave > 0.S) {
       out := true.B
     }.otherwise {
@@ -65,7 +67,7 @@ class DDC(mode: Int = DDC_200M) extends Module {
   val out = RegInit(false.B)
   val update = RegInit(false.B)
 
-  io.out.value := 0.U
+  // io.out.value := 0.U
   io.out.readData := 0.S
   io.out.update := update
 
@@ -92,7 +94,7 @@ class DDC(mode: Int = DDC_200M) extends Module {
     decode(io.in.data, io.out.readData)
     val mul = IndexedRefer(cnt)
     yListMul(cnt) := mul
-    io.out.value := mul.asTypeOf(UInt(16.W))
+    // io.out.value := mul.asTypeOf(UInt(16.W))
     // }
   }
 
@@ -110,7 +112,7 @@ class DDCWrapper(mode: Int = DDC_200M) extends RawModule {
       val data = Bool()
       val update = Bool()
       val readData = SInt(8.W)
-      val value = UInt(16.W)
+      val ave = SInt(8.W)
     })
     val clock = Input(Clock())
     val resetN = Input(Bool())
