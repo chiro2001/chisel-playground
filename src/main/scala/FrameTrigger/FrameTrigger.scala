@@ -5,7 +5,7 @@ import chisel3.util._
 import chisel3.experimental.chiselName
 
 @chiselName
-class FrameTrigger(width: Int = 8, chunkSize: Int = 3) extends Module {
+class FrameTrigger(width: Int = 8, chunkSize: Int = 3, delay: Int = 15) extends Module {
   val io = IO(new Bundle {
     val in = Input(new Bundle {
       val data = UInt(width.W)
@@ -27,7 +27,8 @@ class FrameTrigger(width: Int = 8, chunkSize: Int = 3) extends Module {
     .reduce(_ + _)
   val run = RegInit(true.B)
 
-  io.out.trigger := false.B
+  val triggerDelay = RegInit(0.U(8.W))
+  io.out.trigger := triggerDelay =/= 0.U
   when(io.in.clear || run) {
     when(cnt =/= (chunkSize - 1).U) {
       cnt := cnt + 1.U
@@ -35,10 +36,10 @@ class FrameTrigger(width: Int = 8, chunkSize: Int = 3) extends Module {
       cnt := 0.U
     }
     when(ave >= threshold) {
-      io.out.trigger := true.B
+      triggerDelay := delay.U
       run := false.B
     }.otherwise {
-      io.out.trigger := false.B
+      triggerDelay := Mux(triggerDelay === 0.U, 0.U, triggerDelay - 1.U)
     }
 
   }

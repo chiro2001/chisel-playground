@@ -1,12 +1,5 @@
 [
   {
-    "class":"firrtl.transforms.CombinationalPath",
-    "sink":"~FrameTriggerWrapper|FrameTriggerWrapper>io_out_trigger",
-    "sources":[
-      "~FrameTriggerWrapper|FrameTriggerWrapper>io_in_clear"
-    ]
-  },
-  {
     "class":"firrtl.EmitCircuitAnnotation",
     "emitter":"firrtl.VerilogEmitter"
   },
