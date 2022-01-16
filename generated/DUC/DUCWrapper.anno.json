@@ -1,12 +1,5 @@
 [
   {
-    "class":"firrtl.transforms.CombinationalPath",
-    "sink":"~DUCWrapper|DUCWrapper>io_out_dac",
-    "sources":[
-      "~DUCWrapper|DUCWrapper>io_in_sync"
-    ]
-  },
-  {
     "class":"firrtl.EmitCircuitAnnotation",
     "emitter":"firrtl.VerilogEmitter"
   },
