@@ -207,6 +207,7 @@ module DUCWrapper(
   wire [7:0] _cnt_T_1 = cnt + 8'h1; // @[DUC.scala 120:24]
   wire [1:0] _GEN_2 = io_in_data ? 2'h2 : state; // @[DUC.scala 117:36 DUC.scala 118:19 DUC.scala 88:24]
   wire [7:0] _GEN_3 = io_in_data ? cnt : _cnt_T_1; // @[DUC.scala 117:36 DUC.scala 90:22 DUC.scala 120:17]
+  wire [1:0] _state_T = io_in_sync ? 2'h2 : 2'h0; // @[DUC.scala 123:23]
   wire  _T_5 = 2'h2 == state; // @[Conditional.scala 37:30]
   wire [1:0] _GEN_6 = ~buffer_17_sync ? 2'h0 : state; // @[DUC.scala 128:36 DUC.scala 129:17 DUC.scala 88:24]
   DUC module_ ( // @[DUC.scala 81:24]
@@ -483,10 +484,10 @@ module DUCWrapper(
         state <= 2'h1; // @[DUC.scala 110:17]
       end
     end else if (_T_2) begin // @[Conditional.scala 39:67]
-      if (cnt != 8'h11) begin // @[DUC.scala 116:41]
+      if (cnt != 8'h12) begin // @[DUC.scala 116:35]
         state <= _GEN_2;
       end else begin
-        state <= 2'h2; // @[DUC.scala 123:17]
+        state <= _state_T; // @[DUC.scala 123:17]
       end
     end else if (_T_5) begin // @[Conditional.scala 39:67]
       state <= _GEN_6;
@@ -498,7 +499,7 @@ module DUCWrapper(
         cnt <= 8'h0; // @[DUC.scala 111:15]
       end
     end else if (_T_2) begin // @[Conditional.scala 39:67]
-      if (cnt != 8'h11) begin // @[DUC.scala 116:41]
+      if (cnt != 8'h12) begin // @[DUC.scala 116:35]
         cnt <= _GEN_3;
       end
     end

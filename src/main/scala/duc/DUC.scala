@@ -113,14 +113,14 @@ class DUCWrapper(mode: Int = DUC_120M, cachedLen: Int = 18) extends RawModule {
         clearBuffer()
       }
       is(sCounting) {
-        when(cnt =/= (cachedLen - 1).U) {
+        when(cnt =/= cachedLen.U) {
           when(io.in.data =/= 0.U) {
             state := sOK
           }.otherwise {
             cnt := cnt + 1.U
           }
         }.otherwise {
-          state := sOK
+          state := Mux(io.in.sync, sOK, sIdle)
         }
         updateBuffer()
       }
