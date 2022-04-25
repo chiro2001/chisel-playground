@@ -2,8 +2,8 @@ package test
 import org.scalatest._
 import chiseltest._
 import chisel3._
-import chiseltest.experimental.TestOptionBuilder._
-import chiseltest.internal.WriteVcdAnnotation
+// import chiseltest.experimental.TestOptionBuilder._
+// import chiseltest.internal.WriteVcdAnnotation
 
 class NiexieTest extends FlatSpec with ChiselScalatestTester with Matchers {
   behavior of "Niexie"
