@@ -13,6 +13,9 @@ module Booth(
   reg [31:0] _RAND_2;
   reg [31:0] _RAND_3;
   reg [31:0] _RAND_4;
+  reg [31:0] _RAND_5;
+  reg [31:0] _RAND_6;
+  reg [31:0] _RAND_7;
 `endif // RANDOMIZE_REG_INIT
   reg [15:0] a; // @[Booth.scala 16:18]
   reg [15:0] q; // @[Booth.scala 17:18]
@@ -23,53 +26,57 @@ module Booth(
   wire  _nextState_T = 2'h0 == state; // @[Mux.scala 81:61]
   wire  _nextState_T_2 = 2'h1 == state; // @[Mux.scala 81:61]
   wire  _nextState_T_4 = 2'h2 == state; // @[Mux.scala 81:61]
-  wire [15:0] minusX = 16'h0 - io_x; // @[Booth.scala 36:16]
-  wire [1:0] _T_7 = {q[0],qExtra}; // @[Booth.scala 40:50]
-  wire  _T_9 = ~reset; // @[Booth.scala 60:13]
-  wire [15:0] _T_14 = 2'h1 == _T_7 ? io_x : 16'h0; // @[Mux.scala 81:58]
-  wire [15:0] _T_16 = 2'h2 == _T_7 ? minusX : _T_14; // @[Mux.scala 81:58]
-  wire [15:0] aNext = a + _T_16; // @[Booth.scala 44:20]
-  wire [31:0] _aqNext_T_1 = {aNext,q}; // @[Booth.scala 45:57]
-  wire [30:0] _GEN_14 = _aqNext_T_1[31:1]; // @[Booth.scala 45:64]
-  wire [31:0] aqNext = {{1{_GEN_14[30]}},_GEN_14}; // @[Booth.scala 45:72]
-  wire [7:0] _cnt_T_1 = cnt + 8'h1; // @[Booth.scala 62:18]
-  wire [31:0] result = {a,q}; // @[Booth.scala 66:47]
-  wire [31:0] _GEN_1 = _nextState_T_4 ? result : 32'h0; // @[Booth.scala 53:17 67:12 34:8]
-  wire [31:0] _GEN_7 = _nextState_T_2 ? 32'h0 : _GEN_1; // @[Booth.scala 53:17 34:8]
-  wire  _GEN_15 = ~_nextState_T; // @[Booth.scala 60:13]
-  wire  _GEN_16 = ~_nextState_T & _nextState_T_2; // @[Booth.scala 60:13]
-  assign io_busy = _nextState_T ? 1'h0 : _nextState_T_2; // @[Booth.scala 33:11 53:17]
-  assign io_z = _nextState_T ? 32'h0 : _GEN_7; // @[Booth.scala 53:17 34:8]
+  reg [15:0] xReg; // @[Booth.scala 35:21]
+  reg [15:0] minusXReg; // @[Booth.scala 36:26]
+  wire [15:0] minusX = 16'h0 - io_x; // @[Booth.scala 38:16]
+  reg [31:0] lastResultReg; // @[Booth.scala 40:30]
+  wire [1:0] _T_7 = {q[0],qExtra}; // @[Booth.scala 44:50]
+  wire  _T_9 = ~reset; // @[Booth.scala 68:13]
+  wire [15:0] _T_14 = 2'h1 == _T_7 ? xReg : 16'h0; // @[Mux.scala 81:58]
+  wire [15:0] _T_16 = 2'h2 == _T_7 ? minusXReg : _T_14; // @[Mux.scala 81:58]
+  wire [15:0] aNext = a + _T_16; // @[Booth.scala 48:20]
+  wire [31:0] _aqNext_T_1 = {aNext,q}; // @[Booth.scala 49:57]
+  wire [30:0] _GEN_19 = _aqNext_T_1[31:1]; // @[Booth.scala 49:64]
+  wire [31:0] aqNext = {{1{_GEN_19[30]}},_GEN_19}; // @[Booth.scala 49:72]
+  wire [7:0] _cnt_T_1 = cnt + 8'h1; // @[Booth.scala 70:18]
+  wire [31:0] result = {a,q}; // @[Booth.scala 75:47]
+  wire [31:0] _GEN_1 = _nextState_T_4 ? result : 32'h0; // @[Booth.scala 57:17 76:12 34:8]
+  wire  _GEN_8 = _nextState_T_2 & cnt != 8'h10; // @[Booth.scala 33:11 57:17 71:15]
+  wire [31:0] _GEN_9 = _nextState_T_2 ? 32'h0 : _GEN_1; // @[Booth.scala 57:17 34:8]
+  wire  _GEN_20 = ~_nextState_T; // @[Booth.scala 68:13]
+  wire  _GEN_21 = ~_nextState_T & _nextState_T_2; // @[Booth.scala 68:13]
+  assign io_busy = _nextState_T ? 1'h0 : _GEN_8; // @[Booth.scala 33:11 57:17]
+  assign io_z = _nextState_T ? lastResultReg : _GEN_9; // @[Booth.scala 57:17 63:12]
   always @(posedge clock) begin
     if (reset) begin // @[Booth.scala 16:18]
       a <= 16'h0; // @[Booth.scala 16:18]
-    end else if (!(_nextState_T)) begin // @[Booth.scala 53:17]
-      if (_nextState_T_2) begin // @[Booth.scala 53:17]
-        a <= aqNext[31:16]; // @[Booth.scala 48:7]
-      end
+    end else if (_nextState_T) begin // @[Booth.scala 57:17]
+      a <= 16'h0; // @[Booth.scala 64:9]
+    end else if (_nextState_T_2) begin // @[Booth.scala 57:17]
+      a <= aqNext[31:16]; // @[Booth.scala 52:7]
     end
     if (reset) begin // @[Booth.scala 17:18]
       q <= 16'h0; // @[Booth.scala 17:18]
-    end else if (_nextState_T) begin // @[Booth.scala 53:17]
-      q <= io_y; // @[Booth.scala 55:9]
-    end else if (_nextState_T_2) begin // @[Booth.scala 53:17]
-      q <= aqNext[15:0]; // @[Booth.scala 49:7]
+    end else if (_nextState_T) begin // @[Booth.scala 57:17]
+      q <= io_y; // @[Booth.scala 59:9]
+    end else if (_nextState_T_2) begin // @[Booth.scala 57:17]
+      q <= aqNext[15:0]; // @[Booth.scala 53:7]
     end
     if (reset) begin // @[Booth.scala 18:23]
       qExtra <= 1'h0; // @[Booth.scala 18:23]
-    end else if (!(_nextState_T)) begin // @[Booth.scala 53:17]
-      if (_nextState_T_2) begin // @[Booth.scala 53:17]
-        qExtra <= q[0]; // @[Booth.scala 47:12]
+    end else if (!(_nextState_T)) begin // @[Booth.scala 57:17]
+      if (_nextState_T_2) begin // @[Booth.scala 57:17]
+        qExtra <= q[0]; // @[Booth.scala 51:12]
       end
     end
     if (reset) begin // @[Booth.scala 19:20]
       cnt <= 8'h0; // @[Booth.scala 19:20]
-    end else if (_nextState_T) begin // @[Booth.scala 53:17]
-      cnt <= 8'h0; // @[Booth.scala 56:11]
-    end else if (_nextState_T_2) begin // @[Booth.scala 53:17]
-      cnt <= _cnt_T_1; // @[Booth.scala 62:11]
-    end else if (_nextState_T_4) begin // @[Booth.scala 53:17]
-      cnt <= 8'h0; // @[Booth.scala 65:11]
+    end else if (_nextState_T) begin // @[Booth.scala 57:17]
+      cnt <= 8'h0; // @[Booth.scala 60:11]
+    end else if (_nextState_T_2) begin // @[Booth.scala 57:17]
+      cnt <= _cnt_T_1; // @[Booth.scala 70:11]
+    end else if (_nextState_T_4) begin // @[Booth.scala 57:17]
+      cnt <= 8'h0; // @[Booth.scala 74:11]
     end
     if (reset) begin // @[Booth.scala 23:22]
       state <= 2'h0; // @[Booth.scala 23:22]
@@ -86,13 +93,32 @@ module Booth(
     end else begin
       state <= 2'h0;
     end
+    if (reset) begin // @[Booth.scala 35:21]
+      xReg <= 16'h0; // @[Booth.scala 35:21]
+    end else if (_nextState_T) begin // @[Booth.scala 57:17]
+      xReg <= io_x; // @[Booth.scala 61:12]
+    end
+    if (reset) begin // @[Booth.scala 36:26]
+      minusXReg <= 16'h0; // @[Booth.scala 36:26]
+    end else if (_nextState_T) begin // @[Booth.scala 57:17]
+      minusXReg <= minusX; // @[Booth.scala 62:17]
+    end
+    if (reset) begin // @[Booth.scala 40:30]
+      lastResultReg <= 32'h0; // @[Booth.scala 40:30]
+    end else if (!(_nextState_T)) begin // @[Booth.scala 57:17]
+      if (_nextState_T_2) begin // @[Booth.scala 57:17]
+        lastResultReg <= 32'h0; // @[Booth.scala 67:21]
+      end else if (_nextState_T_4) begin // @[Booth.scala 57:17]
+        lastResultReg <= result; // @[Booth.scala 78:21]
+      end
+    end
     `ifndef SYNTHESIS
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
         if (~_nextState_T & _nextState_T_2 & ~reset) begin
           $fwrite(32'h80000002,"[%d state=%d] a=%b, q=%b, qExtra=%b, pack=%b, x=%b, -x=%b\n",cnt,state,a,q,qExtra,_T_7,
-            io_x,minusX); // @[Booth.scala 60:13]
+            xReg,minusXReg); // @[Booth.scala 68:13]
         end
     `ifdef PRINTF_COND
       end
@@ -102,9 +128,9 @@ module Booth(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_16 & _T_9) begin
+        if (_GEN_21 & _T_9) begin
           $fwrite(32'h80000002,"a: %b -> %b; aqNext: %b; q_-1: %b -> %b; addValue = %b\n",a,aNext,aqNext,qExtra,q[0],
-            _T_16); // @[Booth.scala 50:11]
+            _T_16); // @[Booth.scala 54:11]
         end
     `ifdef PRINTF_COND
       end
@@ -114,8 +140,8 @@ module Booth(
     `ifdef PRINTF_COND
       if (`PRINTF_COND) begin
     `endif
-        if (_GEN_15 & ~_nextState_T_2 & _nextState_T_4 & _T_9) begin
-          $fwrite(32'h80000002,"result = %b\n",result); // @[Booth.scala 68:13]
+        if (_GEN_20 & ~_nextState_T_2 & _nextState_T_4 & _T_9) begin
+          $fwrite(32'h80000002,"result = %b\n",result); // @[Booth.scala 77:13]
         end
     `ifdef PRINTF_COND
       end
@@ -168,6 +194,12 @@ initial begin
   cnt = _RAND_3[7:0];
   _RAND_4 = {1{`RANDOM}};
   state = _RAND_4[1:0];
+  _RAND_5 = {1{`RANDOM}};
+  xReg = _RAND_5[15:0];
+  _RAND_6 = {1{`RANDOM}};
+  minusXReg = _RAND_6[15:0];
+  _RAND_7 = {1{`RANDOM}};
+  lastResultReg = _RAND_7[31:0];
 `endif // RANDOMIZE_REG_INIT
   `endif // RANDOMIZE
 end // initial
