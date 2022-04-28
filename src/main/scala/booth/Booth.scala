@@ -6,6 +6,7 @@ import chisel3.util._
 
 @chiselName
 class Booth(widthInput: Int = 16) extends Module {
+  val width = widthInput
   val io = IO(new Bundle {
     val x = Input(UInt(widthInput.W))
     val y = Input(UInt(widthInput.W))
@@ -13,8 +14,9 @@ class Booth(widthInput: Int = 16) extends Module {
     val start = Input(Bool())
     val z = Output(UInt((widthInput * 2).W))
   })
-  val a = RegInit(0.U(widthInput.W))
-  val q = RegInit(0.U(widthInput.W))
+  val format = "b"
+  val a = RegInit(0.U((width).W))
+  val q = RegInit(0.U(width.W))
   val qExtra = RegInit(false.B)
   val cnt = RegInit(0.U(8.W))
 
@@ -24,7 +26,7 @@ class Booth(widthInput: Int = 16) extends Module {
   val nextState = Wire(UInt(log2Ceil(states.size).W))
   val stateMatrix = Array(
     idleState -> Mux(io.start, runningState, idleState),
-    runningState -> Mux(cnt === (widthInput - 1).U, outputState, runningState),
+    runningState -> Mux(cnt === (width - 1).U, outputState, runningState),
     outputState -> idleState
   )
   nextState := MuxLookup(state, idleState, stateMatrix)
@@ -32,26 +34,26 @@ class Booth(widthInput: Int = 16) extends Module {
 
   io.busy := false.B
   io.z := 0.U
-  val xReg = RegInit(0.U(widthInput.W))
-  val minusXReg = RegInit(0.U(widthInput.W))
+  val xReg = RegInit(0.U(width.W))
+  val minusXReg = RegInit(0.U(width.W))
   val x = io.x
   val minusX = -io.x
 
-  val lastResultReg = RegInit(0.U((widthInput * 2).W))
+  val lastResultReg = RegInit(0.U((width * 2).W))
 
   def qLast = q(0).asBool
 
   def pack = VecInit(Seq(qLast, qExtra).reverse).asUInt
 
   def addShift(addValue: UInt) = {
-    // val aNext = (((a + VecInit(Seq(addValue, 0.U(widthInput.W))).asUInt).asTypeOf(SInt(a.getWidth.W))) >> 1.U).asUInt
     val aNext = (a + addValue).asUInt
     val aqNext = (VecInit(Seq(aNext, q).reverse).asUInt.asSInt >> 1.U).asUInt
     val qExtraNext = qLast
     qExtra := qExtraNext
-    a := aqNext(widthInput * 2 - 1, widthInput)
-    q := aqNext(widthInput - 1, 0)
-    printf("a: %b -> %b; aqNext: %b; q_-1: %b -> %b; addValue = %b\n", a, aNext, aqNext, qExtra, qExtraNext, addValue)
+    a := aqNext(width * 2 - 1, width)
+    q := aqNext(width - 1, 0)
+    printf(s"a: %${format} -> %${format}; aqNext: %${format}; q_-1: %${format} -> %${format}; addValue = %${format}\n",
+      a, aNext, aqNext, qExtra, qExtraNext, addValue)
   }
 
   switch(state) {
@@ -62,19 +64,21 @@ class Booth(widthInput: Int = 16) extends Module {
       minusXReg := minusX
       io.z := lastResultReg
       a := 0.U
+      qExtra := 0.U
     }
     is(runningState) {
       lastResultReg := 0.U
-      printf("[%d state=%d] a=%b, q=%b, qExtra=%b, pack=%b, x=%b, -x=%b\n", cnt, state, a, q, qExtra, pack, xReg, minusXReg)
+      printf(s"[%${format} state=%${format}] a=%${format}, q=%${format}, qExtra=%${format}, pack=%${format}, x=%${format}, -x=%${format}\n",
+        cnt, state, a, q, qExtra, pack, xReg, minusXReg)
       addShift(MuxLookup(pack, 0.U, Array("b01".U -> xReg, "b10".U -> minusXReg)))
       cnt := cnt + 1.U
-      io.busy := cnt =/= widthInput.U
+      io.busy := true.B
     }
     is(outputState) {
       cnt := 0.U
       val result = VecInit(Seq(a, q).reverse).asUInt
       io.z := result
-      printf("result = %b\n", result)
+      printf(s"result = %${format}\n", result)
       lastResultReg := result
     }
   }
