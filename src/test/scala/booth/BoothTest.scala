@@ -7,34 +7,54 @@ import chiseltest.ChiselScalatestTester
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
-class BoothTest extends AnyFlatSpec with ChiselScalatestTester with should.Matchers {
+class BoothTest
+    extends AnyFlatSpec
+    with ChiselScalatestTester
+    with should.Matchers {
   behavior of "Booth"
+  val widthInput = 16
+  def getIntString(i: Int) = f"h$i%x"
+  def getUInt(i: Int) = getIntString(i).U
+  def testOnce[T <: BoothPort](d: T, x: String, y: String, z: String): Unit = {
+    d.io.x.poke(x.U)
+    d.io.y.poke(y.U)
+    d.clock.step(5)
+    d.io.start.poke(true.B)
+    d.clock.step(1)
+    d.io.busy.expect(true.B)
+    d.io.start.poke(false.B)
+    d.clock.step(widthInput)
+    d.io.busy.expect(false.B)
+    d.io.z.expect(z.U)
+    d.clock.step(10)
+  }
+  def testOnce[T <: BoothPort](d: T, a: Int, b: Int): Unit = {
+    println(
+      f"testing   : a(${getIntString(a)}) * b(${getIntString(b)}) = ${a * b}(${getIntString(a * b)})"
+    )
+    testOnce(d, getIntString(a), getIntString(b), getIntString(a * b))
+    println(
+      f"test done : a(${getIntString(a)}) * b(${getIntString(b)}) = ${a * b}(${getIntString(a * b)})"
+    )
+  }
   it should "pass multiply test" in {
-    val widthInput = 16
-    test(new Booth(widthInput)).withAnnotations(Seq(PrintFullStackTraceAnnotation, WriteVcdAnnotation)) { d =>
-      println("generate RTL done")
-      def getIntString(i: Int) = "h" + bigintToHex(i).replace("0x", "")
-      def getUInt(i: Int) = getIntString(i).U
-      def testOnce(a: Int, b: Int): Unit = {
-        println(f"testing   : a(${getIntString(a)}) * b(${getIntString(b)}) = ${a * b}(${getIntString(a * b)})")
-        d.io.x.poke(getUInt(a))
-        d.io.y.poke(getUInt(b))
-        d.clock.step(5)
-        d.io.start.poke(true.B)
-        d.clock.step(1)
-        d.io.busy.expect(true.B)
-        d.io.start.poke(false.B)
-        d.clock.step(widthInput)
-        d.io.busy.expect(false.B)
-        d.io.z.expect(getUInt(a * b))
-        d.clock.step(10)
-        println(f"test done : a(${getIntString(a)}) * b(${getIntString(b)}) = ${a * b}(${getIntString(a * b)})")
-      }
+    test(new Booth(widthInput)).withAnnotations(
+      Seq(PrintFullStackTraceAnnotation, WriteVcdAnnotation)
+    ) { d =>
       val testData = Seq(
         (0x1234, 0x1234),
       )
-      // ++ (for {i <- 0 until 2} yield (scala.util.Random.nextInt(0xff), scala.util.Random.nextInt(0xff)))
-      testData.foreach(item => testOnce(item._1, item._2))
+      testData.foreach(item => testOnce(d, item._1, item._2))
+    }
+  }
+  it should "pass better multiply test" in {
+    test(new BetterBooth(4)).withAnnotations(
+      Seq(PrintFullStackTraceAnnotation, WriteVcdAnnotation)
+    ) { d =>
+      val testData = Seq(
+        ("b1010", "b1001", "b101010")
+      )
+      testData.foreach(item => testOnce(d, item._1, item._2, item._3))
     }
   }
 }
