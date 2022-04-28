@@ -16,6 +16,7 @@ class BoothTest
   def getIntString(i: Int) = f"h$i%x"
   def getUInt(i: Int) = getIntString(i).U
   def testOnce[T <: BoothPort](d: T, x: String, y: String, z: String): Unit = {
+    println(f"\ttesting: $x * $y = $z")
     d.io.x.poke(x.U)
     d.io.y.poke(y.U)
     d.clock.step(5)
@@ -52,7 +53,10 @@ class BoothTest
       Seq(PrintFullStackTraceAnnotation, WriteVcdAnnotation)
     ) { d =>
       val testData = Seq(
-        ("b1010", "b1001", "b101010")
+        (getIntString(3), getIntString(7), getIntString(21)),
+        ("b1101", "b1001", getIntString(21)),
+        (getIntString(6), getIntString(5), getIntString(30)),
+        ("b1010", "b1001", "b101010"),
       )
       testData.foreach(item => testOnce(d, item._1, item._2, item._3))
     }
