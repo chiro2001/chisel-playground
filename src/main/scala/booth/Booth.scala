@@ -5,12 +5,11 @@ import chisel3.internal.naming.chiselName
 import chisel3.util._
 
 @chiselName
-class Booth(widthInput: Int = 16) extends BoothPort {
+class Booth(widthInput: Int = 16) extends BoothPort(widthInput) {
   val width = widthInput
   val format = "b"
-  val a = RegInit(0.U(width.W))
-  val q = RegInit(0.U(width.W))
-  val qExtra = RegInit(false.B)
+  val yReg = RegInit(0.U((width + 1).W))
+  val sumReg = RegInit(0.S((width * 2).W))
   val cnt = RegInit(0.U(8.W))
 
   val states = Enum(3)
@@ -27,49 +26,51 @@ class Booth(widthInput: Int = 16) extends BoothPort {
 
   io.busy := false.B
   io.z := 0.U
-  val xReg = RegInit(0.U(width.W))
-  val minusXReg = RegInit(0.U(width.W))
-  val x = io.x
-  val minusX = -io.x
+  val xReg = RegInit(0.S((width * 2).W))
 
   val lastResultReg = RegInit(0.U((width * 2).W))
 
-  def qLast = q(0).asBool
+  def yRegLast = yReg(1, 0)
 
-  def pack = VecInit(Seq(qLast, qExtra).reverse).asUInt
-
-  def addShift(addValue: UInt) = {
-    val aNext = (a + addValue).asUInt
-    val aqNext = (VecInit(Seq(aNext, q).reverse).asUInt.asSInt >> 1.U).asUInt
-    val qExtraNext = qLast
-    qExtra := qExtraNext
-    a := aqNext(width * 2 - 1, width)
-    q := aqNext(width - 1, 0)
-    printf(s"a: %$format -> %$format; aqNext: %$format; q_-1: %$format -> %$format; addValue = %$format\n",
-      a, aNext, aqNext, qExtra, qExtraNext, addValue)
+  def addShift(addValue: SInt) = {
+    val add = addValue.asTypeOf(SInt((width * 2).W)) << cnt
+    sumReg := sumReg + add
+    yReg := yReg >> 1.U
+    printf(
+      s"yRegExtra = %$format, addValue = %$format, sum = %$format\n",
+      yReg,
+      add,
+      sumReg.asUInt
+    )
   }
 
   switch(state) {
     is(idleState) {
-      q := io.y
       cnt := 0.U
-      xReg := x
-      minusXReg := minusX
+      xReg := io.x.asTypeOf(SInt(width.W))
       io.z := lastResultReg
-      a := 0.U
-      qExtra := 0.U
+      sumReg := 0.S
+      yReg := io.y << 1.U
     }
     is(runningState) {
+      println(f"width = $width, yRegLast size = ${yRegLast.getWidth}")
       lastResultReg := 0.U
-      printf(s"[%$format state=%$format] a=%$format, q=%$format, qExtra=%$format, pack=%$format, x=%$format, -x=%$format\n",
-        cnt, state, a, q, qExtra, pack, xReg, minusXReg)
-      addShift(MuxLookup(pack, 0.U, Array("b01".U -> xReg, "b10".U -> minusXReg)))
+      printf(
+        s"[%d state=%$format], yReg=%$format, yRegLast=%$format, x=%$format, -x=%$format\n",
+        cnt,
+        state,
+        yReg,
+        yRegLast,
+        xReg.asUInt,
+        (-xReg).asUInt
+      )
+      addShift(MuxLookup(yRegLast, 0.S, Array("b01".U -> xReg, "b10".U -> -xReg)))
       cnt := cnt + 1.U
       io.busy := true.B
     }
     is(outputState) {
       cnt := 0.U
-      val result = VecInit(Seq(a, q).reverse).asUInt
+      val result = sumReg.asUInt
       io.z := result
       printf(s"result = %$format\n", result)
       lastResultReg := result

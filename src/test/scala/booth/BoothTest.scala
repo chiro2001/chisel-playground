@@ -12,8 +12,9 @@ class BoothTest
     with ChiselScalatestTester
     with should.Matchers {
   behavior of "Booth"
-  val widthInput = 16
+  val widthInput = 32
   def getIntString(i: Int) = f"h$i%x"
+  def getLongString(i: Long) = f"h$i%x"
   def getUInt(i: Int) = getIntString(i).U
   def testOnce[T <: BoothPort](d: T, x: String, y: String, z: String): Unit = {
     println(f"\ttesting: $x * $y = $z")
@@ -33,7 +34,7 @@ class BoothTest
     println(
       f"testing   : a(${getIntString(a)}) * b(${getIntString(b)}) = ${a * b}(${getIntString(a * b)})"
     )
-    testOnce(d, getIntString(a), getIntString(b), getIntString(a * b))
+    testOnce(d, getIntString(a), getIntString(b), getLongString(a * b))
     println(
       f"test done : a(${getIntString(a)}) * b(${getIntString(b)}) = ${a * b}(${getIntString(a * b)})"
     )
@@ -42,9 +43,12 @@ class BoothTest
     test(new Booth(widthInput)).withAnnotations(
       Seq(PrintFullStackTraceAnnotation, WriteVcdAnnotation)
     ) { d =>
-      val testData = Seq(
-        (0x1234, 0x1234),
-      )
+      println(f"widthInput = $widthInput")
+      val testData =
+        Seq((0x1234, 0x1234)) ++
+        (for {i <- 0 until 100} yield (i, i)) ++
+        (for {i <- -100 until 0} yield (i, i)) ++
+        (for {i <- 0 until 100} yield (-i, i))
       testData.foreach(item => testOnce(d, item._1, item._2))
     }
   }

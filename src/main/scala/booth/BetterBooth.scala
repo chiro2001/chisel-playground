@@ -5,7 +5,7 @@ import chisel3.internal.naming.chiselName
 import chisel3.util._
 
 @chiselName
-class BetterBooth(widthInput: Int = 16) extends BoothPort {
+class BetterBooth(widthInput: Int = 16) extends BoothPort(widthInput) {
   val width = widthInput
   val format = "b"
   val yReg = RegInit(0.U((width + 3).W))
