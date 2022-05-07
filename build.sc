@@ -7,28 +7,24 @@ import scalalib._
 // support BSP
 import mill.bsp._
 
-object %NAME% extends SbtModule { m =>
+object ChiselPlayground extends SbtModule { m =>
   override def millSourcePath = os.pwd
-  override def scalaVersion = "2.12.13"
+  override def scalaVersion = "2.13.8"
   override def scalacOptions = Seq(
-    "-Xsource:2.11",
     "-language:reflectiveCalls",
     "-deprecation",
     "-feature",
-    "-Xcheckinit",
-    // Enables autoclonetype2 in 3.4.x (on by default in 3.5)
-    "-P:chiselplugin:useBundlePlugin"
+    "-Xcheckinit"
   )
   override def ivyDeps = Agg(
-    ivy"edu.berkeley.cs::chisel3:3.4.3",
+    ivy"edu.berkeley.cs::chisel3:3.5.2",
   )
   override def scalacPluginIvyDeps = Agg(
-    ivy"edu.berkeley.cs:::chisel3-plugin:3.4.3",
-    ivy"org.scalamacros:::paradise:2.1.1"
+    ivy"edu.berkeley.cs:::chisel3-plugin:3.5.2"
   )
   object test extends Tests with ScalaTest {
     override def ivyDeps = m.ivyDeps() ++ Agg(
-      ivy"edu.berkeley.cs::chiseltest:0.3.3"
+      ivy"edu.berkeley.cs::chiseltest:0.5.2"
     )
   }
 }
